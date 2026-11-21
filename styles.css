@@ -260,18 +260,38 @@ select { appearance: none; color: var(--ink); border: 1px solid var(--line); bor
 .results-column .viral-match { margin: 0; grid-template-columns: minmax(0, 40%) minmax(0, 1fr); }
 .camera-heading-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 7px; }
 .camera-heading-actions .button { min-height: 34px; padding-inline: 10px; font-size: 14px; }
-.camera-view .site-header nav,
+.camera-view { overflow: hidden; }
+.camera-view .site-header,
 .camera-view .intro,
 .camera-view .library,
 .camera-view .site-footer { display: none; }
-.camera-view .sound-button { margin-left: auto; }
-.camera-view main { width: calc(100% - 40px); padding-block: 18px; }
-.camera-view .studio-grid { grid-template-columns: minmax(0, 1fr) minmax(300px, 28%); align-items: start; }
-.camera-view .stage { min-height: max(410px, calc(100dvh - 225px)); }
-@media (max-width: 800px) {
-  .camera-view main { width: calc(100% - 24px); padding-block: 12px; }
-  .camera-view .studio-grid { grid-template-columns: 1fr; }
-  .camera-view .stage { min-height: max(340px, 60dvh); }
+.camera-view .studio-grid {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  overflow: hidden;
+  background: #f7f5fc;
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 24vw, 440px);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 10px;
+}
+.camera-view .camera-panel { align-self: stretch; min-height: 0; }
+.camera-view .stage { min-height: 0; margin-inline: 0; border-radius: 0; }
+.camera-view .results-column { max-height: 100%; overflow-y: auto; overscroll-behavior: contain; }
+.camera-view .preview-mat { min-height: 0; }
+.camera-view #meme { width: min(100%, clamp(120px, 30dvh, 300px)); }
+
+@media (max-width: 680px) {
+  .camera-view .studio-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    overflow-y: auto;
+  }
+  .camera-view .stage { min-height: 58dvh; }
+  .camera-view .results-column { max-height: none; overflow-y: visible; }
 }
 @media (max-width: 480px) {
   .camera-heading-actions { padding-block: 5px; }

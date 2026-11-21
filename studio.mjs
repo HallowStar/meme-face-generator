@@ -285,22 +285,35 @@ stopButton.addEventListener('click', () => {
   startButton.focus({ preventScroll: true });
 });
 
+const studioGrid = byId('studio-grid');
+
 function setCameraView(expanded) {
   document.body.classList.toggle('camera-view', expanded);
   expandButton.textContent = expanded ? 'Exit camera view' : 'Expand camera';
-  if (expanded) window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function exitCameraView() {
+  setCameraView(false);
+  if (document.fullscreenElement === studioGrid) void document.exitFullscreen().catch(() => {});
+  expandButton.focus({ preventScroll: true });
 }
 
 expandButton.addEventListener('click', () => {
-  setCameraView(!document.body.classList.contains('camera-view'));
+  if (document.body.classList.contains('camera-view')) {
+    exitCameraView();
+    return;
+  }
+  setCameraView(true);
+  if (document.fullscreenEnabled) void studioGrid.requestFullscreen().catch(() => {});
 });
 
-document.querySelector('.wordmark').addEventListener('click', () => setCameraView(false));
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement && document.body.classList.contains('camera-view')) exitCameraView();
+});
 
 window.addEventListener('keydown', (event) => {
   if (event.key !== 'Escape' || event.defaultPrevented || !document.body.classList.contains('camera-view')) return;
-  setCameraView(false);
-  expandButton.focus({ preventScroll: true });
+  exitCameraView();
 });
 
 demoButton.addEventListener('click', () => fireReaction(reactionsById.get('shock'), undefined, true));
