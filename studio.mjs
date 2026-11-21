@@ -97,11 +97,11 @@ function updateGifPlayback() {
   gifPlayback.textContent = playGif ? 'Pause GIF' : 'Play GIF';
 }
 
-function showViralMatch(reaction) {
+function showViralMatch(reaction, advance = true) {
   const { gifs, topic } = reactionContent[reaction.id];
   const position = gifPositions.get(reaction.id) ?? 0;
   activeGif = gifs[position];
-  gifPositions.set(reaction.id, (position + 1) % gifs.length);
+  if (advance) gifPositions.set(reaction.id, (position + 1) % gifs.length);
   if (reduceMotion.matches) playGif = false;
   byId('viral-name').textContent = activeGif.title;
   byId('viral-source').href = 'https://giphy.com/gifs/' + activeGif.id;
@@ -110,10 +110,7 @@ function showViralMatch(reaction) {
   updateGifPlayback();
   byId('viral-screen').hidden = false;
   byId('viral-links').hidden = false;
-  const gifDemo = byId('gif-demo');
-  const moveFocus = document.activeElement === gifDemo;
-  gifDemo.hidden = true;
-  if (moveFocus) gifPlayback.focus({ preventScroll: true });
+
 }
 
 function loadImage(url) {
@@ -321,9 +318,7 @@ window.addEventListener('keydown', (event) => {
   exitCameraView();
 });
 
-for (const button of [demoButton, byId('gif-demo')]) {
-  button.addEventListener('click', () => fireReaction(reactionsById.get('shock'), undefined, true));
-}
+demoButton.addEventListener('click', () => fireReaction(reactionsById.get('shock'), undefined, true));
 window.addEventListener('pagehide', stopCamera);
 
 soundButton.addEventListener('click', () => {
@@ -483,6 +478,7 @@ downloadButton.addEventListener('click', () => {
 });
 
 renderDraft();
+showViralMatch(reactionsById.get('shock'), false);
 void chooseTemplate(templates[0], true);
 void Promise.all([
   document.fonts.load('20px "Archivo Black"'),

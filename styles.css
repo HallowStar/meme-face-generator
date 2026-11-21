@@ -298,7 +298,6 @@ select { appearance: none; color: var(--ink); border: 1px solid var(--line); bor
   .camera-heading-actions .button { min-height: 31px; padding-inline: 7px; }
 }
 
-#gif-demo { margin-top: 8px; }
 
 html { scroll-padding-top: 18px; }
 main { overflow-x: clip; }
@@ -481,4 +480,24 @@ main { overflow-x: clip; }
 @media (prefers-reduced-motion: reduce) {
   .effect-card:hover, .effect-card:focus-visible { flex-grow: 1; }
   .template-select:is(:hover, :focus-visible) img { transform: none; }
+}
+
+@media (min-width: 1080px) {
+  .studio-grid, .camera-view .studio-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    gap: 12px;
+  }
+  .studio-grid .camera-panel, .studio-grid .results-column, .studio-grid .editor-panel {
+    align-self: stretch;
+  }
+  .results-column {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .results-column .viral-match {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .viral-match .viral-screen { aspect-ratio: auto; align-self: stretch; }
+  .camera-view .results-column { overflow: hidden; }
+  .camera-view .editor-panel { min-height: 0; overflow: auto; }
 }
