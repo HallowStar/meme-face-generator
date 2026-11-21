@@ -484,20 +484,25 @@ main { overflow-x: clip; }
 
 @media (min-width: 1080px) {
   .studio-grid, .camera-view .studio-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
     gap: 12px;
   }
   .studio-grid .camera-panel, .studio-grid .results-column, .studio-grid .editor-panel {
     align-self: stretch;
   }
   .results-column {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
     gap: 12px;
   }
-  .results-column .viral-match {
-    grid-template-rows: minmax(0, 1fr) auto;
+  .results-column .viral-screen {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: clamp(130px, 25dvh, 250px);
   }
-  .viral-match .viral-screen { aspect-ratio: auto; align-self: stretch; }
-  .camera-view .results-column { overflow: hidden; }
+  .camera-view .results-column {
+    grid-template-rows: auto minmax(0, 1fr);
+    overflow: hidden;
+  }
   .camera-view .editor-panel { min-height: 0; overflow: auto; }
 }
