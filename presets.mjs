@@ -1,11 +1,11 @@
 export const reactions = [
-  { id: 'shock', source: 'face', name: 'Shock', icon: '😱', color: 'peach', accent: '#ff773c', title: 'EXCUSE ME?!', top: 'WHEN YOU SEE THE GROUP CHAT', pose: 'Open your mouth wide and raise your brows.', effect: 'Explosion', sound: 'Bass boom' },
-  { id: 'smile', source: 'face', name: 'Big smile', icon: '😁', color: 'yellow', accent: '#ffce4d', title: 'I CALL THAT A WIN', top: 'WHEN IT WORKS ON THE FIRST TRY', pose: 'Hold a wide smile.', effect: 'Confetti', sound: 'Chime' },
-  { id: 'wink', source: 'face', name: 'Wink', icon: '😉', color: 'lilac', accent: '#b786ff', title: 'YOU SAW NOTHING', top: 'WHEN NOBODY NOTICED', pose: 'Close one eye and keep the other open.', effect: 'Sparkle', sound: 'Pop' },
-  { id: 'thumb', source: 'hand', name: 'Thumbs up', icon: '👍', color: 'mint', accent: '#65f5af', title: 'APPROVED', top: 'THE COUNCIL HAS SPOKEN', pose: 'Hold a thumbs-up toward the camera.', effect: 'Stamp', sound: 'Ding' },
-  { id: 'peace', source: 'hand', name: 'Peace sign', icon: '✌️', color: 'pink', accent: '#ff79c3', title: 'PEACE OUT', top: 'ME LEAVING THE MEETING', pose: 'Hold two fingers up in a V.', effect: 'Rainbow trail', sound: 'Arcade blip' },
-  { id: 'palm', source: 'hand', name: 'Open palm', icon: '✋', color: 'blue', accent: '#7ee2ff', title: 'HOLD UP', top: 'WHEN THE MATH ISN’T MATHING', pose: 'Face your open palm toward the camera.', effect: 'Freeze-frame', sound: 'Record scratch' },
-  { id: 'fist', source: 'hand', name: 'Closed fist', icon: '✊', color: 'lilac', accent: '#a67bff', title: 'POWERING UP', top: 'ME AFTER ONE SIP OF COFFEE', pose: 'Hold a closed fist in frame.', effect: 'Energy rings', sound: 'Rising synth' },
+  { id: 'shock', source: 'face', name: 'Shock', color: 'peach', accent: '#ff773c', title: 'EXCUSE ME?!', top: 'WHEN YOU SEE THE GROUP CHAT', pose: 'Open your mouth wide and raise your brows.', effect: 'Explosion', sound: 'Bass boom' },
+  { id: 'smile', source: 'face', name: 'Big smile', color: 'yellow', accent: '#ffce4d', title: 'I CALL THAT A WIN', top: 'WHEN IT WORKS ON THE FIRST TRY', pose: 'Hold a wide smile.', effect: 'Confetti', sound: 'Chime' },
+  { id: 'wink', source: 'face', name: 'Wink', color: 'lilac', accent: '#b786ff', title: 'YOU SAW NOTHING', top: 'WHEN NOBODY NOTICED', pose: 'Close one eye and keep the other open.', effect: 'Sparkle', sound: 'Pop' },
+  { id: 'thumb', source: 'hand', name: 'Thumbs up', color: 'mint', accent: '#65f5af', title: 'APPROVED', top: 'THE COUNCIL HAS SPOKEN', pose: 'Hold a thumbs-up toward the camera.', effect: 'Stamp', sound: 'Ding' },
+  { id: 'peace', source: 'hand', name: 'Peace sign', color: 'pink', accent: '#ff79c3', title: 'PEACE OUT', top: 'ME LEAVING THE MEETING', pose: 'Hold two fingers up in a V.', effect: 'Rainbow trail', sound: 'Arcade blip' },
+  { id: 'palm', source: 'hand', name: 'Open palm', color: 'blue', accent: '#7ee2ff', title: 'HOLD UP', top: 'WHEN THE MATH ISN’T MATHING', pose: 'Face your open palm toward the camera.', effect: 'Freeze-frame', sound: 'Record scratch' },
+  { id: 'fist', source: 'hand', name: 'Closed fist', color: 'lilac', accent: '#a67bff', title: 'POWERING UP', top: 'ME AFTER ONE SIP OF COFFEE', pose: 'Hold a closed fist in frame.', effect: 'Energy rings', sound: 'Rising synth' },
 ];
 
 export const templates = [

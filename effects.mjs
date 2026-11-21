@@ -159,13 +159,13 @@ export function renderLive(canvas, reaction, still, point, progress) {
   paintEffect(ctx, reaction, x, y, Math.min(width, height) * 0.32, progress, opacity);
 }
 
-function drawBackdrop(ctx, width, height, reaction) {
+function drawBackdrop(ctx, width, height) {
   const gradient = ctx.createRadialGradient(width * 0.48, height * 0.45, 25, width * 0.48, height * 0.45, height * 0.68);
-  gradient.addColorStop(0, '#6331b5');
-  gradient.addColorStop(1, '#211239');
+  gradient.addColorStop(0, '#4a2920');
+  gradient.addColorStop(1, '#1a1815');
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
-  ctx.fillStyle = '#d8c7ff43';
+  ctx.fillStyle = '#f6d8c043';
   for (let y = 18; y < height; y += 29) {
     for (let x = 18; x < width; x += 29) {
       ctx.beginPath();
@@ -173,12 +173,7 @@ function drawBackdrop(ctx, width, height, reaction) {
       ctx.fill();
     }
   }
-  if (reaction) {
-    ctx.font = '260px Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(reaction.icon, width * 0.5, height * 0.51);
-  }
+
 }
 
 function wrapText(ctx, value, width) {
@@ -247,12 +242,12 @@ export function renderMeme(canvas, draft, layout, topCaption, bottomCaption) {
     ctx.fillRect(0, 0, width, height);
     drawCover(ctx, source, width, height, draft.template?.focus);
   } else {
-    drawBackdrop(ctx, width, height, draft.reaction);
+    drawBackdrop(ctx, width, height);
   }
 
   if (draft.reaction) {
     const [x, y] = pointOnCover(draft.point, source, width, height);
-    paintEffect(ctx, draft.reaction, x, y, width * 0.27, 0.46, source ? 0.64 : 0.8);
+    paintEffect(ctx, draft.reaction, x, y, width * (source ? 0.27 : 0.42), 0.46, source ? 0.64 : 0.9);
   }
 
   const credit = draft.template?.credit;

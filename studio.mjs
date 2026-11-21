@@ -1,5 +1,5 @@
-import { reactions, templates } from './presets.mjs';
-import { captureStill, createSoundEffects, renderLive, renderMeme } from './effects.mjs';
+import { reactions, templates } from './presets.mjs?v=editorial';
+import { captureStill, createSoundEffects, renderLive, renderMeme } from './effects.mjs?v=editorial';
 import { startTracking } from './vision.mjs';
 import { pickReactionCaption, reactionContent } from './reaction-content.mjs';
 
@@ -341,7 +341,7 @@ for (const reaction of reactions) {
   button.dataset.color = reaction.color;
   button.dataset.source = reaction.source;
   button.setAttribute('aria-label', 'Try ' + reaction.name);
-  const icon = appendText(button, 'span', 'effect-icon', reaction.icon);
+  const icon = appendText(button, 'span', 'effect-icon', '');
   icon.setAttribute('aria-hidden', 'true');
   appendText(button, 'span', 'effect-name', reaction.name);
   const pose = appendText(button, 'span', 'effect-pose', reaction.pose);
@@ -393,6 +393,33 @@ for (const template of templates) {
     appendText(credits, 'a', '', 'License').href = template.license;
   }
 }
+
+const templateStack = byId('template-stack');
+const stackImages = templates.map((template) => {
+  const image = document.createElement('img');
+  image.src = template.image;
+  image.alt = '';
+  image.loading = 'lazy';
+  image.style.objectPosition = template.focus.map((value) => value * 100 + '%').join(' ');
+  templateStack.append(image);
+  return image;
+});
+let featuredIndex = 0;
+
+function showFeaturedTemplate(offset) {
+  featuredIndex = (featuredIndex + offset + templates.length) % templates.length;
+  const template = templates[featuredIndex];
+  byId('featured-template-name').textContent = template.name;
+  byId('featured-template-caption').textContent = template.top + ' / ' + template.bottom;
+  stackImages.forEach((image, index) => {
+    image.dataset.depth = String((index - featuredIndex + templates.length) % templates.length);
+  });
+}
+
+byId('previous-template').addEventListener('click', () => showFeaturedTemplate(-1));
+byId('next-template').addEventListener('click', () => showFeaturedTemplate(1));
+byId('apply-featured-template').addEventListener('click', () => void chooseTemplate(templates[featuredIndex]));
+showFeaturedTemplate(0);
 
 byId('upload-button').addEventListener('click', () => upload.click());
 

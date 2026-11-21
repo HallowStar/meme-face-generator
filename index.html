@@ -4,16 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Turn webcam expressions and hand gestures into captioned memes with effects, sound, and matching GIFs.">
-  <meta name="theme-color" content="#f7f5fc">
+  <meta name="theme-color" content="#f7f3e9">
   <title>Meme Cam</title>
-  <link rel="stylesheet" href="./styles.css?v=visible-match">
-  <script type="module" src="./studio.mjs?v=visible-match"></script>
+  <link rel="stylesheet" href="./styles.css?v=editorial">
+  <script type="module" src="./studio.mjs?v=editorial"></script>
+  <script type="module" src="./motion.mjs?v=editorial"></script>
 </head>
 <body>
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="wordmark" href="#studio"><span class="brand-icon" aria-hidden="true">✷</span> Meme Cam</a>
+      <a class="wordmark" href="#top"><span class="brand-icon" aria-hidden="true">MC</span> Meme Cam</a>
       <nav aria-label="Main navigation">
+        <a href="#studio-grid">Studio</a>
         <a href="#effects">Effects</a>
         <a href="#templates">Templates</a>
       </nav>
@@ -22,10 +24,23 @@
       </button>
     </div>
   </header>
-  <main class="shell" id="studio">
+  <main class="shell" id="top">
     <section class="intro" aria-labelledby="page-title">
-      <h1 id="page-title">Make a face.<br class="mobile-break"> <em>Make a meme.</em></h1>
-      <p>Trigger effects and sound with a face reaction or a hand gesture.</p>
+      <div class="intro-copy">
+        <h1 id="page-title">Make a face.<br><em>Make a <img class="headline-photo" src="./assets/doge.jpg" alt="" width="120" height="66"> meme.</em></h1>
+        <p>Use your face or hands to trigger live effects, match a viral GIF, and make a meme of your own.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#studio-grid">Open the studio</a>
+          <a class="button outline-button" href="#effects">Explore effects</a>
+        </div>
+      </div>
+      <figure class="hero-print">
+        <div class="hero-image">
+          <img src="./assets/grumpy-cat.jpg" alt="Grumpy Cat looking unimpressed" width="1189" height="1548" fetchpriority="high">
+          <span aria-hidden="true">I HAD FUN ONCE.</span>
+        </div>
+        <figcaption><a href="https://commons.wikimedia.org/wiki/File:Grumpy_Cat_by_Gage_Skidmore.jpg">Gage Skidmore</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></figcaption>
+      </figure>
     </section>
 
     <div class="studio-grid" id="studio-grid">
@@ -41,9 +56,6 @@
           <video id="camera" playsinline muted aria-label="Mirrored camera preview" hidden></video>
           <canvas id="live-effects" width="960" height="640" aria-hidden="true"></canvas>
           <div class="viewfinder" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-          <span class="stage-spark spark-one" aria-hidden="true">✦</span>
-          <span class="stage-spark spark-two" aria-hidden="true">✷</span>
-          <span class="stage-spark spark-three" aria-hidden="true">✦</span>
           <div id="camera-prompt" class="stage-prompt">
             <div class="camera-emblem" aria-hidden="true"><span class="camera-icon"></span></div>
             <h3 id="stage-title">Ready when you are</h3>
@@ -122,7 +134,7 @@
 
     <section class="library" id="effects" aria-labelledby="effects-title">
       <div class="library-heading">
-        <div><h2 id="effects-title">Effects library</h2><p>Hold a pose on camera or click a card to try it.</p></div>
+        <div><h2 id="effects-title">Effects library</h2><p data-scrub-text>Hold a pose on camera or click a card to try it.</p></div>
         <div class="filters" role="group" aria-label="Filter effects">
           <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
           <button class="filter-button" type="button" data-filter="face" aria-pressed="false">Face</button>
@@ -134,17 +146,29 @@
 
     <section class="library templates" id="templates" aria-labelledby="templates-title">
       <div class="library-heading">
-        <div><h2 id="templates-title">Meme templates</h2><p>Pick a favorite or bring your own image.</p></div>
+        <div><h2 id="templates-title">Meme templates</h2><p data-scrub-text>Pick a favorite or bring your own image.</p></div>
         <button class="button upload-button" type="button" id="upload-button"><span aria-hidden="true">+</span> Use my image</button>
         <input type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" id="upload" hidden>
+      </div>
+      <div class="template-feature" aria-label="Browse featured meme templates">
+        <div class="template-stack" id="template-stack" aria-hidden="true"></div>
+        <div class="template-feature-copy">
+          <h3 id="featured-template-name" aria-live="polite">Grumpy Cat</h3>
+          <p id="featured-template-caption"></p>
+          <div class="feature-actions">
+            <button class="button outline-button" id="previous-template" type="button" aria-label="Previous template">Previous</button>
+            <button class="button outline-button" id="next-template" type="button" aria-label="Next template">Next</button>
+            <button class="button primary" id="apply-featured-template" type="button">Use template</button>
+          </div>
+        </div>
       </div>
       <div class="template-grid" id="template-grid"></div>
     </section>
   </main>
   <footer class="site-footer">
     <div class="shell footer-inner">
-      <span>Meme Cam</span>
-      <span>Camera and image processing happen in your browser.</span>
+      <div><h2>See what your face makes.</h2><p>Camera and image processing happen in your browser.</p></div>
+      <a class="button primary" href="#studio-grid">Back to the studio</a>
     </div>
   </footer>
 </body>

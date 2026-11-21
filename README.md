@@ -38,6 +38,7 @@ Hold the pose briefly and release it before trying again. Keep your face and han
 - MediaPipe Tasks Vision 0.10.32, with Face Landmarker and Gesture Recognizer using WebAssembly
 - Browser MediaDevices, Canvas 2D, and Web Audio
 - GIPHY Embed Player for the viral previews and Datamuse for the bundled reaction vocabulary
+- GSAP ScrollTrigger for the template stack and scroll text reveals
 - A static HTTP server. Python is only needed for the launch command shown here
 
 The live camera needs localhost or HTTPS, browser permission, and internet access to load the MediaPipe runtime and models. The downloaded templates and sounds work with the camera off. If tracking fails to load, stop the camera and retry. If a browser preview blocks camera access, open localhost directly in Chrome. Click the sound button to toggle audio. The app respects the system reduced-motion setting.
@@ -49,4 +50,4 @@ The GIF preview loads an official GIPHY embed over the internet. Use **Play GIF*
 - Grumpy Cat photo by Gage Skidmore. The cropped and captioned Grumpy Cat template exports use the same CC BY-SA 3.0 license as the source photo. [Source](https://commons.wikimedia.org/wiki/File:Grumpy_Cat_by_Gage_Skidmore.jpg) · [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
 - Taiki photo by Roberto Vasarri, released to the public domain. Euterpia used this photo in a CC0 Doge remix. [Photo](https://commons.wikimedia.org/wiki/File:Shiba_inu_taiki.jpg) · [Doge remix](https://commons.wikimedia.org/wiki/File:Doge_homemade_meme.jpg)
 - *This is fine* by David Revoy. The app crops and captions the illustration. [Source](https://www.peppercarrot.com/en/viewer/misc__2025-07-01_This-is-fine_by-David-Revoy.html) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
-- Space Grotesk and Archivo Black are included under the SIL Open Font License. The license files are in `assets/`.
+- Outfit, Space Grotesk, and Archivo Black are included under the SIL Open Font License. The license files are in `assets/`.
