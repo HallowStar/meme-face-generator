@@ -121,6 +121,8 @@ nav a:hover { color: var(--purple-dark); }
 .live-caption { position: absolute; z-index: 5; left: 50%; bottom: 10%; transform: translateX(-50%) rotate(-3deg); max-width: calc(100% - 50px); width: max-content; padding: 8px 14px; border: 3px solid #201635; border-radius: 9px; box-shadow: 4px 5px 0 #231635; background: var(--effect-color, #ffcf4f); color: #1c1430; font-family: "Archivo Black", Impact, sans-serif; font-size: clamp(16px, 3.4vw, 36px); line-height: 1.1; text-align: center; overflow-wrap: anywhere; pointer-events: none; }
 
 .camera-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 9px 16px; min-height: 57px; }
+.camera-effect-field { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.camera-effect-field select { max-width: 100%; background-color: #fffcf5; }
 .tracking-group { display: flex; flex-wrap: wrap; gap: 5px; }
 .tracker { border-radius: 6px; background: #f0e9de; padding: 5px 8px; color: #5e5349; font-size: 13px; font-weight: 600; }
 .tracker[data-active="true"] { background: #f7e1d5; color: var(--purple-dark); }
@@ -185,7 +187,7 @@ select { appearance: none; color: var(--ink); border: 1px solid var(--line); bor
 .library-heading { display: flex; gap: 12px; justify-content: space-between; align-items: flex-end; margin-bottom: 13px; }
 .library-heading h2 { font-size: clamp(28px, 4.4vw, 40px); line-height: 1.04; letter-spacing: -.065em; }
 .library-heading p { margin-top: 5px; font-size: 16px; line-height: 1.4; color: var(--muted); }
-.filters { display: flex; align-self: center; padding: 3px; gap: 2px; background: #eee5d8; border-radius: 10px; }
+.filters { display: flex; flex-wrap: wrap; align-self: center; padding: 3px; gap: 2px; background: #eee5d8; border-radius: 10px; }
 .filter-button { border: 0; border-radius: 7px; background: transparent; color: #5c5147; min-height: 34px; padding-inline: 12px; font-size: 14px; font-weight: 700; }
 .filter-button[aria-pressed="true"] { color: var(--purple-dark); background: #fff; box-shadow: 0 1px 3px #422e2229; }
 .filter-button:hover { color: var(--purple-dark); }

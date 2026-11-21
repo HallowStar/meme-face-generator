@@ -6,8 +6,8 @@
   <meta name="description" content="Turn webcam expressions and hand gestures into captioned memes with effects, sound, and matching GIFs.">
   <meta name="theme-color" content="#f7f3e9">
   <title>Meme Cam</title>
-  <link rel="stylesheet" href="./styles.css?v=expression-matching">
-  <script type="module" src="./studio.mjs?v=pose-similarity"></script>
+  <link rel="stylesheet" href="./styles.css?v=effect-packs">
+  <script type="module" src="./studio.mjs?v=effect-packs"></script>
   <script type="module" src="./motion.mjs?v=editorial"></script>
 </head>
 <body>
@@ -74,6 +74,13 @@
           </div>
           <button class="button quiet-button" type="button" id="stop-camera" hidden>Stop camera</button>
           <button class="button quiet-button" type="button" id="match-pose" hidden disabled>Match my pose</button>
+          <label class="camera-effect-field" for="camera-effect">
+            Camera effect
+            <select id="camera-effect">
+              <option value="rotate">Rotate by reaction</option>
+              <option value="original">Original effects only</option>
+            </select>
+          </label>
           <span class="local-label" id="local-label">Camera stays on-device</span>
         </div>
       </section>
@@ -143,6 +150,7 @@
           <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
           <button class="filter-button" type="button" data-filter="face" aria-pressed="false">Face</button>
           <button class="filter-button" type="button" data-filter="hand" aria-pressed="false">Hand</button>
+          <button class="filter-button" type="button" data-filter="packs" aria-pressed="false">New effects</button>
         </div>
       </div>
       <div class="effect-grid" id="effect-grid"></div>

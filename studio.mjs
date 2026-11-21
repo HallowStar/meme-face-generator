@@ -1,7 +1,8 @@
 import { matchReaction } from './meme-matching.mjs?v=pose-similarity';
 import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=pose-similarity';
 import { reactions, templates } from './presets.mjs?v=editorial';
-import { captureStill, createSoundEffects, renderLive, renderMeme } from './effects.mjs?v=editorial';
+import { captureStill, createSoundEffects, renderLive, renderMeme } from './effects.mjs?v=effect-packs';
+import { effectPacks } from './effect-packs.mjs?v=effect-packs';
 import { startTracking } from './vision.mjs?v=pose-similarity';
 import { pickReactionCaption, reactionContent } from './reaction-content.mjs?v=flexible-poses';
 
@@ -9,6 +10,7 @@ const byId = (id) => document.getElementById(id);
 const video = byId('camera');
 const stage = byId('stage');
 const liveCanvas = byId('live-effects');
+const cameraEffect = byId('camera-effect');
 const memeCanvas = byId('meme');
 const startButton = byId('start-camera');
 const stopButton = byId('stop-camera');
@@ -28,6 +30,17 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const viralPlayer = byId('viral-player');
 const gifPlayback = byId('gif-playback');
 const reactionsById = new Map(reactions.map((reaction) => [reaction.id, reaction]));
+const packsById = new Map(effectPacks.map((effect) => [effect.id, effect]));
+const effectRotations = new Map(reactions.map((reaction) => [reaction.id, [reaction]]));
+const effectPositions = new Map();
+for (const pack of effectPacks) {
+  if (!effectRotations.has(pack.reaction)) effectRotations.set(pack.reaction, []);
+  effectRotations.get(pack.reaction).push(pack);
+  const option = document.createElement('option');
+  option.value = pack.id;
+  option.textContent = pack.name;
+  cameraEffect.append(option);
+}
 const labels = {
   off: 'Camera off', starting: 'Waiting for camera', loading: 'Loading tracking',
   on: 'Camera live', error: 'Camera unavailable',
@@ -165,7 +178,7 @@ byId('use-match-image').addEventListener('click', async () => {
     const image = await loadImage(match.image);
     if (request !== draftRequest || match !== activeMatch) return;
     setDraft({
-      template: match, image, reaction: draft.reaction, pose: draft.pose, label: match.title + ' image',
+      template: match, image, reaction: draft.reaction, pose: draft.pose, effect: draft.effect, label: match.title + ' image',
     }, topCaption.value, bottomCaption.value);
     notify('');
     announce(match.title + ' is ready in the meme editor.');
@@ -208,12 +221,13 @@ function showEditor() {
 function clearLiveEffect() {
   cancelAnimationFrame(animationFrame);
   clearTimeout(effectTimer);
+  sound.stop();
   currentEffect = null;
   byId('effect-caption').hidden = true;
   renderLive(liveCanvas, null);
 }
 
-function drawLiveEffect(reaction, still, point, progress) {
+function drawLiveEffect(effect, still, point, progress, motion = true) {
   const density = Math.min(window.devicePixelRatio || 1, 2);
   const width = Math.max(1, Math.round(stage.clientWidth * density));
   const height = Math.max(1, Math.round(stage.clientHeight * density));
@@ -221,50 +235,50 @@ function drawLiveEffect(reaction, still, point, progress) {
     liveCanvas.width = width;
     liveCanvas.height = height;
   }
-  renderLive(liveCanvas, reaction, still, point, progress);
+  renderLive(liveCanvas, effect, still, point, progress, motion);
 }
 
-function fireReaction(reaction, position, manual = false, expression = null) {
+function fireReaction(reaction, position, { manual = false, expression = null, effect = reaction, approximate = false } = {}) {
   clearLiveEffect();
   ++draftRequest;
 
   const frame = video.hidden ? null : captureStill(video);
   const point = position ? { x: 1 - position.x, y: position.y } : undefined;
-  const action = { reaction, frame, point, label: reaction.name + ' reaction' };
+  const action = { reaction, effect, frame, point, label: reaction.name + ' reaction' };
   const captions = generateCaptions(reaction);
   currentEffect = action;
   setDraft(action, captions.top, captions.bottom);
-  showReactionMatch(reaction, expression);
-  announce(reaction.name + ' effect. A new meme and viral match are ready.');
+  showReactionMatch(reaction, expression, false, approximate);
+  announce(effect.name + ' effect. A new meme and viral match are ready.');
 
   const caption = byId('effect-caption');
-  caption.textContent = reaction.title;
-  caption.style.setProperty('--effect-color', reaction.accent);
+  caption.textContent = effect.title;
+  caption.style.setProperty('--effect-color', effect.accent);
   caption.hidden = false;
 
   if (manual) {
     void sound.unlock().then(() => {
-      if (currentEffect === action) sound.play(reaction.id);
+      if (currentEffect === action) sound.play(effect.id);
     });
   } else {
-    sound.play(reaction.id);
+    sound.play(effect.id);
   }
 
+  const duration = effect.duration ?? (effect.id === 'palm' ? 900 : 1120);
   if (reduceMotion.matches) {
-    drawLiveEffect(reaction, frame, point, 0.42);
-    effectTimer = window.setTimeout(clearLiveEffect, 970);
+    drawLiveEffect(effect, frame, point, 0.46, false);
+    effectTimer = window.setTimeout(clearLiveEffect, duration);
     return;
   }
 
   const start = performance.now();
-  const duration = reaction.id === 'palm' ? 900 : 1120;
   function animate(now) {
     const progress = (now - start) / duration;
     if (progress >= 1) {
       clearLiveEffect();
       return;
     }
-    drawLiveEffect(reaction, frame, point, Math.max(0, progress));
+    drawLiveEffect(effect, frame, point, Math.max(0, progress));
     animationFrame = requestAnimationFrame(animate);
   }
   animationFrame = requestAnimationFrame(animate);
@@ -309,14 +323,29 @@ function setCameraState(state, message = '') {
   notify(state === 'on' ? message : '');
 }
 
+function chooseCameraEffect(id, approximate) {
+  const pinned = packsById.get(cameraEffect.value);
+  if (pinned || approximate) return pinned;
+  if (cameraEffect.value === 'original') return reactionsById.get(id);
+  const options = effectRotations.get(id);
+  if (!options) return;
+  const position = effectPositions.get(id) ?? 0;
+  effectPositions.set(id, (position + 1) % options.length);
+  return options[position];
+}
+
+function reactionFor(id) {
+  return reactionsById.get(id) ?? { id, ...flexiblePoses[id] };
+}
+
 function captureMatch(id, expression, point, approximate = false) {
-  const effect = reactionsById.get(id);
-  if (effect && !approximate) {
-    fireReaction(effect, point, false, expression);
+  const pose = reactionFor(id);
+  const effect = chooseCameraEffect(id, approximate);
+  if (effect) {
+    fireReaction(pose, point, { expression, effect, approximate });
     return;
   }
 
-  const pose = effect ?? { id, ...flexiblePoses[id] };
   const frame = captureStill(video);
   if (!frame) return;
   clearLiveEffect();
@@ -411,7 +440,10 @@ window.addEventListener('keydown', (event) => {
   exitCameraView();
 });
 
-demoButton.addEventListener('click', () => fireReaction(reactionsById.get('shock'), undefined, true));
+demoButton.addEventListener('click', () => {
+  const effect = packsById.get(cameraEffect.value);
+  fireReaction(reactionFor(effect?.reaction ?? 'shock'), undefined, { manual: true, effect });
+});
 window.addEventListener('pagehide', stopCamera);
 
 soundButton.addEventListener('click', () => {
@@ -423,22 +455,25 @@ soundButton.addEventListener('click', () => {
 });
 
 const effectGrid = byId('effect-grid');
-for (const reaction of reactions) {
+for (const effect of [...reactions, ...effectPacks]) {
+  const isPack = Boolean(effect.reaction);
+  const reaction = isPack ? reactionFor(effect.reaction) : effect;
   const button = appendText(effectGrid, 'button', 'effect-card', '');
   button.type = 'button';
-  button.dataset.color = reaction.color;
-  button.dataset.source = reaction.source;
-  button.setAttribute('aria-label', 'Try ' + reaction.name);
+  button.dataset.color = effect.color ?? reaction.color;
+  button.dataset.source = effect.source ?? reaction.source;
+  if (isPack) button.dataset.pack = '';
+  button.setAttribute('aria-label', 'Try ' + effect.name);
   const icon = appendText(button, 'span', 'effect-icon', '');
   icon.setAttribute('aria-hidden', 'true');
-  appendText(button, 'span', 'effect-name', reaction.name);
-  const pose = appendText(button, 'span', 'effect-pose', reaction.pose);
-  const kind = appendText(button, 'span', 'effect-kind', reaction.effect + ' · ' + reaction.sound);
-  pose.id = reaction.id + '-pose';
-  kind.id = reaction.id + '-effects';
+  appendText(button, 'span', 'effect-name', effect.name);
+  const pose = appendText(button, 'span', 'effect-pose', effect.description ?? reaction.pose);
+  const kind = appendText(button, 'span', 'effect-kind', (isPack ? reaction.name : reaction.effect) + ' · ' + effect.sound);
+  pose.id = effect.id + '-pose';
+  kind.id = effect.id + '-effects';
   button.setAttribute('aria-describedby', pose.id + ' ' + kind.id);
   button.addEventListener('click', () => {
-    fireReaction(reaction, undefined, true);
+    fireReaction(reaction, undefined, { manual: true, effect });
     const bounds = stage.getBoundingClientRect();
     if (bounds.bottom < 0 || bounds.top > window.innerHeight) {
       stage.scrollIntoView({ block: 'center', behavior: reduceMotion.matches ? 'instant' : 'smooth' });
@@ -453,7 +488,7 @@ for (const button of document.querySelectorAll('[data-filter]')) {
       other.setAttribute('aria-pressed', String(button === other));
     }
     for (const card of effectGrid.children) {
-      card.hidden = filter !== 'all' && card.dataset.source !== filter;
+      card.hidden = filter === 'packs' ? !card.hasAttribute('data-pack') : filter !== 'all' && card.dataset.source !== filter;
     }
   });
 }

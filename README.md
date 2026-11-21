@@ -32,6 +32,27 @@ Each reaction produces one editable draft and a matching GIF preview. Repeating 
 
 Hold the pose briefly and release it before trying again. Keep your face and hand well lit and inside the frame. One face and one hand can be tracked at a time. Expression rules use facial movements as controls and can vary by person and lighting.
 
+## New effects
+
+Choose **New effects** in the effects library and click any card to preview its animation and sound with or without the webcam. **Camera effect** defaults to **Rotate by reaction**. For example, repeated shocks cycle through the comic explosion, Comet Impact, and Retro Signal. Choose a specific effect to use it for every detected reaction, or choose **Original effects only** to use the seven original effects. The GIF and caption still follow the detected reaction.
+
+| Effect | Default trigger | Sound |
+| --- | --- | --- |
+| Genjutsu Vanish | Wink | Warp hum, vanish snap, and return chime |
+| Shadow Blink | Smirk | Reversed sweep and snap |
+| Rift Portal | Peace sign | Rising portal hum |
+| Time Shatter | Open palm | Ice crack and rewind |
+| Thunder Charge | Closed fist | Electrical crackle and rumble |
+| Comet Impact | Shock | Incoming whistle and impact |
+| Retro Signal | Shock | Glitch chirps and static |
+| Pixel Warp | Puffed cheeks | Chiptune reversal |
+| Bass Drop | Closed fist | Sub-bass drop |
+| Holo Scan | Pointing up | Scanner ticks and confirmation tone |
+| Heart Bloom | Big smile | Soft ascending chord |
+| Checkpoint | Thumbs up | Arcade save jingle |
+
+Genjutsu Vanish fades the entire camera feed out and brings it back. PNG exports keep the captured still and a static effect overlay. The animations and sounds are generated in the browser with Canvas and Web Audio. With reduced motion enabled, the camera shows a static overlay for the new effects.
+
 ## How reaction matching works
 
 Meme Cam averages MediaPipe facial expression scores over the pose hold. It filters the bundled catalog by reaction, then ranks matches using the traits that matter for that reaction. For example, jaw opening carries the most weight for shock, and the difference between the two eyes carries the most weight for a wink. Hand matches use the recognized gesture. Demo taps and low-similarity poses rotate through that reaction's collection.
