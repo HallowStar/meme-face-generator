@@ -1,4 +1,5 @@
 export const effectPacks = [
+  { id: 'energy-orb', reaction: 'cup', source: 'hand', color: 'blue', name: 'Energy Orb', title: 'ORB CHARGED', accent: '#81ebff', duration: 2450, description: 'Cup your hand palm-up to charge and hold a glowing blue orb.', sound: 'Rising charge and electric chime' },
   { id: 'genjutsu', reaction: 'wink', name: 'Genjutsu Vanish', title: 'VANISHED', accent: '#ffa487', duration: 1820, description: 'Illusion rings dissolve the feed and bring it back.', sound: 'Warp hum and vanish snap' },
   { id: 'shadow-blink', reaction: 'smirk', source: 'face', color: 'lilac', name: 'Shadow Blink', title: 'AFTERIMAGE', accent: '#c6a8ff', duration: 1380, description: 'Tinted afterimages drift away.', sound: 'Reversed sweep and snap' },
   { id: 'rift', reaction: 'peace', name: 'Rift Portal', title: 'RIFT OPEN', accent: '#8ef9e8', duration: 1500, description: 'A spinning portal pulls streaks toward the center.', sound: 'Rising portal hum' },

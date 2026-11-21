@@ -1,4 +1,5 @@
 export const flexiblePoses = {
+  cup: { name: 'Cupped palm', topic: 'power-up', match: 'fist', title: 'POWER IN MY HANDS' },
   smirk: { name: 'Smirk', topic: 'smirking', title: 'I KNOW SOMETHING', traits: { smirk: 0.42 } },
   squint: { name: 'Skeptical look', topic: 'squinting-in-confusion', title: 'SOMETHING FEELS OFF', traits: { squint: 0.48 } },
   pout: { name: 'Pout', topic: 'pouting-lip', title: 'THIS IS UNFAIR', traits: { pucker: 0.48 } },

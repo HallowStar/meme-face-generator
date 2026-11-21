@@ -1,4 +1,4 @@
-import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=pose-similarity';
+import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=energy-orb';
 
 const runtimeBase = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32';
 const modelRoot = 'https://storage.googleapis.com/mediapipe-models';
@@ -77,7 +77,38 @@ function isOpenPalm(points) {
   return fingersExtended && thumbExtended;
 }
 
-export function classifyHand(categories, worldLandmarks) {
+function isCuppedPalm(points, handedness, holding) {
+  if (points?.length !== 21 || !handedness) return false;
+  const vector = (from, to) => [points[to].x - points[from].x, points[to].y - points[from].y, points[to].z - points[from].z];
+  const distance = (from, to) => Math.hypot(...vector(from, to));
+  const [ax, ay, az] = vector(0, 9);
+  const [bx, by, bz] = vector(17, 5);
+  const normal = [ay * bz - az * by, az * bx - ax * bz, ax * by - ay * bx];
+  const facingUp = normal[1] * (handedness === 'Left' ? -1 : 1) / Math.hypot(...normal);
+  const palmPitch = Math.abs(ay) / Math.hypot(ax, ay, az);
+  if (!(facingUp >= (holding ? 0.36 : 0.46) && palmPitch < (holding ? 0.75 : 0.66))) return false;
+
+  // A cupped hand has several fingers reaching outward, unlike a fist or thumbs-up.
+  return [5, 9, 13, 17].filter((base) => {
+    const tip = base + 3;
+    const length = distance(base, base + 1) + distance(base + 1, base + 2) + distance(base + 2, tip);
+    return distance(base, tip) > length * (holding ? 0.56 : 0.62);
+  }).length >= 3;
+}
+
+function palmAnchor(points, aspect) {
+  const wrist = points[0];
+  const middle = points[9];
+  const span = (a, b) => Math.hypot((points[a].x - points[b].x) * aspect, points[a].y - points[b].y);
+  return {
+    x: wrist.x + (middle.x - wrist.x) * 0.65,
+    y: wrist.y + (middle.y - wrist.y) * 0.65,
+    radius: (span(5, 17) + span(0, 9)) * 0.28,
+  };
+}
+
+export function classifyHand(categories, worldLandmarks, handedness, holding = false) {
+  if (isCuppedPalm(worldLandmarks, handedness, holding)) return 'cup';
   const best = categories?.reduce((winner, gesture) => (
     !winner || gesture.score > winner.score ? gesture : winner
   ), null);
@@ -88,7 +119,7 @@ export function classifyHand(categories, worldLandmarks) {
   return isOpenPalm(worldLandmarks) ? 'palm' : null;
 }
 
-const priority = ['shock', 'wink', 'smile', 'thumb', 'peace', 'palm', 'fist', ...Object.keys(flexiblePoses)];
+const priority = ['cup', 'shock', 'wink', 'smile', 'thumb', 'peace', 'palm', 'fist', ...Object.keys(flexiblePoses).filter((id) => id !== 'cup')];
 
 export function createReactionGate() {
   const states = new Map(priority.map((id) => [id, {
@@ -105,6 +136,7 @@ export function createReactionGate() {
       if (gap) {
         state.since = null;
         state.absentSince = null;
+        if (id === 'cup') state.latched = false;
       }
       if (face !== id && hand !== id) {
         state.since = null;
@@ -115,8 +147,10 @@ export function createReactionGate() {
       state.absentSince = null;
       state.since ??= now;
       if (!state.latched && now - state.since >= 250) {
-        state.latched = true;
-        if (now >= blockedUntil && !winner) winner = id;
+        const canTrigger = now >= blockedUntil && !winner;
+        // A held orb can start as soon as the previous reaction's cooldown ends.
+        state.latched = id !== 'cup' || canTrigger;
+        if (canTrigger) winner = id;
       }
     }
     if (winner) blockedUntil = now + 1200;
@@ -143,6 +177,7 @@ export function startTracking(video, callbacks) {
   let lastVideoTime = -1;
   const gate = createReactionGate();
   const smoothExpression = createExpressionWindow();
+  let cupped = false;
 
   function stop() {
     if (stopped) return;
@@ -170,16 +205,19 @@ export function startTracking(video, callbacks) {
         const hand = handModel?.recognizeForVideo(video, now);
         const features = describeFace(face?.faceBlendshapes[0]?.categories);
         const faceId = classifyExpression(features);
-        const handId = classifyHand(hand?.gestures[0], hand?.worldLandmarks[0]);
+        const handId = classifyHand(hand?.gestures[0], hand?.worldLandmarks[0], hand?.handedness[0]?.[0]?.categoryName, cupped);
+        cupped = handId === 'cup';
         const facePoints = face?.faceLandmarks[0];
         const handPoints = hand?.landmarks[0];
+        const orbPoint = cupped && handPoints ? palmAnchor(handPoints, video.videoWidth / video.videoHeight) : null;
         const expression = smoothExpression(facePoints ? faceId ?? 'freeform' : null, features, now);
         const active = gate(faceId, handId, now);
-        const point = active === faceId ? facePoints?.[1] : handPoints?.[9];
+        const handPoint = orbPoint ?? handPoints?.[9];
+        const point = active === faceId ? facePoints?.[1] : handPoint;
         callbacks.sample({
           faceAvailable: Boolean(faceModel), handAvailable: Boolean(handModel),
           faceSeen: Boolean(facePoints), handSeen: Boolean(handPoints),
-          faceId, handId, active, point, facePoint: facePoints?.[1], handPoint: handPoints?.[9],
+          faceId, handId, active, point, facePoint: facePoints?.[1], handPoint, orbPoint, time: now,
           pose: expression,
           expression: active && active === faceId ? expression : null,
         });

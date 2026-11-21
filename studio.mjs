@@ -1,9 +1,9 @@
 import { matchReaction } from './meme-matching.mjs?v=pose-similarity';
-import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=pose-similarity';
+import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=energy-orb';
 import { reactions, templates } from './presets.mjs?v=editorial';
-import { captureStill, createSoundEffects, renderLive, renderMeme } from './effects.mjs?v=effect-packs';
-import { effectPacks } from './effect-packs.mjs?v=effect-packs';
-import { startTracking } from './vision.mjs?v=pose-similarity';
+import { captureStill, createSoundEffects, renderLive, renderMeme } from './effects.mjs?v=energy-orb';
+import { effectPacks } from './effect-packs.mjs?v=energy-orb';
+import { startTracking } from './vision.mjs?v=energy-orb';
 import { pickReactionCaption, reactionContent } from './reaction-content.mjs?v=flexible-poses';
 
 const byId = (id) => document.getElementById(id);
@@ -148,7 +148,7 @@ function renderMatch() {
 
 function showReactionMatch(reaction, expression = null, initial = false, approximate = false) {
   const position = matchPositions.get(reaction.id) ?? 0;
-  const result = matchReaction(reaction.id, expression, position);
+  const result = matchReaction(reaction.match ?? reaction.id, expression, position);
   if (!result.items.length) return;
   if (!initial) matchPositions.set(reaction.id, (position + 1) % result.items.length);
   matchItems = result.items;
@@ -227,7 +227,7 @@ function clearLiveEffect() {
   renderLive(liveCanvas, null);
 }
 
-function drawLiveEffect(effect, still, point, progress, motion = true) {
+function drawLiveEffect(effect, still, point, progress, motion = true, opacity) {
   const density = Math.min(window.devicePixelRatio || 1, 2);
   const width = Math.max(1, Math.round(stage.clientWidth * density));
   const height = Math.max(1, Math.round(stage.clientHeight * density));
@@ -235,7 +235,40 @@ function drawLiveEffect(effect, still, point, progress, motion = true) {
     liveCanvas.width = width;
     liveCanvas.height = height;
   }
-  renderLive(liveCanvas, effect, still, point, progress, motion);
+  renderLive(liveCanvas, effect, still, point, progress, motion, opacity);
+}
+
+function mirrorPoint(point) {
+  return point ? { ...point, x: 1 - point.x } : undefined;
+}
+
+function animateHeldOrb(action) {
+  const start = performance.now();
+  let lastSeen = start;
+  let point = action.point;
+
+  function animate(now) {
+    const target = mirrorPoint(latestPose?.orbPoint);
+    if (target) {
+      lastSeen = Math.max(lastSeen, latestPose.time);
+      point = {
+        x: point.x + (target.x - point.x) * 0.28,
+        y: point.y + (target.y - point.y) * 0.28,
+        radius: point.radius + (target.radius - point.radius) * 0.18,
+      };
+    }
+
+    const opacity = Math.min(1, 1 - (now - lastSeen - 150) / 300);
+    if (opacity <= 0) {
+      clearLiveEffect();
+      return;
+    }
+
+    const motion = !reduceMotion.matches;
+    drawLiveEffect(action.effect, action.frame, point, motion ? (now - start) / action.effect.duration : 0.46, motion, opacity);
+    animationFrame = requestAnimationFrame(animate);
+  }
+  animationFrame = requestAnimationFrame(animate);
 }
 
 function fireReaction(reaction, position, { manual = false, expression = null, effect = reaction, approximate = false } = {}) {
@@ -243,8 +276,9 @@ function fireReaction(reaction, position, { manual = false, expression = null, e
   ++draftRequest;
 
   const frame = video.hidden ? null : captureStill(video);
-  const point = position ? { x: 1 - position.x, y: position.y } : undefined;
-  const action = { reaction, effect, frame, point, label: reaction.name + ' reaction' };
+  const point = mirrorPoint(position);
+  const heldOrb = effect.id === 'energy-orb' && reaction.id === 'cup' && point?.radius > 0;
+  const action = { reaction, effect, frame, point, heldOrb, label: reaction.name + ' reaction' };
   const captions = generateCaptions(reaction);
   currentEffect = action;
   setDraft(action, captions.top, captions.bottom);
@@ -254,7 +288,7 @@ function fireReaction(reaction, position, { manual = false, expression = null, e
   const caption = byId('effect-caption');
   caption.textContent = effect.title;
   caption.style.setProperty('--effect-color', effect.accent);
-  caption.hidden = false;
+  caption.hidden = heldOrb;
 
   if (manual) {
     void sound.unlock().then(() => {
@@ -262,6 +296,11 @@ function fireReaction(reaction, position, { manual = false, expression = null, e
     });
   } else {
     sound.play(effect.id);
+  }
+
+  if (heldOrb) {
+    animateHeldOrb(action);
+    return;
   }
 
   const duration = effect.duration ?? (effect.id === 'palm' ? 900 : 1120);
@@ -305,6 +344,7 @@ function setCameraState(state, message = '') {
   byId('local-label').hidden = !stopButton.hidden;
 
   if (state !== 'on') {
+    if (currentEffect?.heldOrb) clearLiveEffect();
     latestPose = null;
     matchPoseButton.disabled = true;
     const text = state === 'loading' ? 'loading' : 'idle';
@@ -368,13 +408,16 @@ function trackFrame(sample) {
     if (seen) text = matched ? '· ' + matched : 'detected';
     updateTracker(key + '-status', type, text, seen);
   }
-  if (sample.active) captureMatch(sample.active, sample.expression, sample.point);
+  if (sample.active && !(currentEffect?.heldOrb && sample.orbPoint)) {
+    captureMatch(sample.active, sample.expression, sample.point);
+  }
 }
 
 matchPoseButton.addEventListener('click', () => {
   if (!latestPose) return;
   const { pose, faceId, handId, facePoint, handPoint } = latestPose;
-  if (faceId) captureMatch(faceId, pose, facePoint);
+  if (handId === 'cup') captureMatch(handId, null, handPoint);
+  else if (faceId) captureMatch(faceId, pose, facePoint);
   else if (handId) captureMatch(handId, null, handPoint);
   else if (pose) captureMatch(closestFacePose(pose), pose, facePoint, true);
 });

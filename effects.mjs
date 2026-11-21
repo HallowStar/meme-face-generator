@@ -297,6 +297,83 @@ function ease(from, to, value) {
   return t * t * (3 - 2 * t);
 }
 
+function orbPlacement(point, source, width, height) {
+  const shortSide = Math.min(width, height);
+  if (!point || !source) return [width / 2, height * 0.30, shortSide * 0.12];
+  const [sourceWidth, sourceHeight] = sourceSize(source);
+  const scale = Math.max(width / sourceWidth, height / sourceHeight);
+  const drawnWidth = sourceWidth * scale;
+  const drawnHeight = sourceHeight * scale;
+  const radius = Math.max(shortSide * 0.066, Math.min(shortSide * 0.19, (point.radius ?? 0.105) * drawnHeight));
+  const x = (width - drawnWidth) / 2 + point.x * drawnWidth;
+  const y = (height - drawnHeight) / 2 + point.y * drawnHeight - radius * 1.13;
+  const margin = radius * 1.12;
+  return [Math.max(margin, Math.min(width - margin, x)), Math.max(margin, Math.min(height - margin, y)), radius];
+}
+
+function paintOrb(ctx, x, y, radius, progress, opacity) {
+  const charge = ease(0, 0.27, progress);
+  const turn = progress * 8;
+  const glow = 0.95 + Math.sin(turn * 2.3) * 0.05;
+  const size = radius * (0.28 + charge * 0.72);
+  ctx.save();
+  ctx.translate(x, y + (1 - charge) * radius * 0.64);
+  ctx.scale(size, size);
+  ctx.globalAlpha = opacity * Math.min(1, 0.15 + charge * 1.1);
+
+  const aura = ctx.createRadialGradient(0, 0, 0.35, 0, 0, 2.25);
+  aura.addColorStop(0, '#4ef9fcad');
+  aura.addColorStop(0.38, '#14a6fb95');
+  aura.addColorStop(0.69, '#1060fd35');
+  aura.addColorStop(1, '#0633ff00');
+  ctx.fillStyle = aura;
+  ctx.fillRect(-2.25, -2.25, 4.5, 4.5);
+
+  const core = ctx.createRadialGradient(-0.2, -0.26, 0.02, 0, 0, 1);
+  core.addColorStop(0, '#f0ffff');
+  core.addColorStop(0.22, '#87fcff');
+  core.addColorStop(0.54, '#10d8ff');
+  core.addColorStop(0.84, '#086bd8');
+  core.addColorStop(1, '#0554cf');
+  ctx.beginPath();
+  ctx.arc(0, 0, 1, 0, TAU);
+  ctx.fillStyle = core;
+  ctx.fill();
+
+  ctx.save();
+  ctx.clip();
+  ctx.rotate(-0.39 + Math.sin(turn) * 0.28);
+  ctx.lineCap = 'round';
+  for (let i = 0; i < 10; i++) {
+    const y = -1 + ((turn * 0.25 + i * 0.21) % 2);
+    const offset = Math.cos(i * 4 + turn) * 0.28;
+    ctx.strokeStyle = i % 3 === 0 ? '#c5ffffe8' : i % 2 ? '#0877e4d1' : '#38f3ffc0';
+    ctx.lineWidth = 0.035 + i % 3 * 0.036;
+    ctx.beginPath();
+    ctx.moveTo(-1.1 + offset, y + 0.18);
+    ctx.bezierCurveTo(-0.39 + offset, y - 0.19, 0.44, y - 0.04, 1.03, y - 0.16);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  ctx.save();
+  ctx.rotate(turn * 0.45);
+  ctx.globalAlpha *= glow;
+  ctx.setLineDash([1.62, 0.12, 0.51, 0.16, 0.27, 0.37]);
+  ring(ctx, 1.02, '#3df9ff', 0.072);
+  ctx.rotate(-0.53);
+  ctx.setLineDash([0.86, 0.44, 0.28, 1.45]);
+  ring(ctx, 1.28, '#68dfffbd', 0.028, 0, 0.88);
+  ctx.restore();
+
+  for (let i = 0; i < 14; i++) {
+    const angle = i / 14 * TAU + turn * (i % 2 ? -0.59 : 0.62);
+    const orbit = 1.14 + i % 5 * 0.14 + Math.sin(turn + i * 2.6) * 0.075;
+    star(ctx, Math.cos(angle) * orbit, Math.sin(angle) * orbit, 0.037 + i % 3 * 0.014, 0.017, 4, i % 3 ? '#61f4ff' : '#e9ffff', angle);
+  }
+  ctx.restore();
+}
+
 let pixelFrame;
 
 function transformCamera(ctx, id, still, width, height, p) {
@@ -360,11 +437,16 @@ function transformCamera(ctx, id, still, width, height, p) {
   }
 }
 
-export function renderLive(canvas, reaction, still, point, progress, motion = true) {
+export function renderLive(canvas, reaction, still, point, progress, motion = true, opacity = Math.min(1, (1 - progress) * 2.5)) {
   const ctx = canvas.getContext('2d');
   const { width, height } = canvas;
   ctx.clearRect(0, 0, width, height);
   if (!reaction) return;
+  if (reaction.id === 'energy-orb') {
+    const [x, y, radius] = orbPlacement(point, still, width, height);
+    paintOrb(ctx, x, y, radius, progress, opacity);
+    return;
+  }
   if (reaction.id === 'palm' && still) {
     drawCover(ctx, still, width, height);
     ctx.fillStyle = '#202a5070';
@@ -375,7 +457,6 @@ export function renderLive(canvas, reaction, still, point, progress, motion = tr
     ctx.restore();
   }
   const [x, y] = pointOnCover(point, still, width, height);
-  const opacity = Math.min(1, (1 - progress) * 2.5);
   paintEffect(ctx, reaction, x, y, Math.min(width, height) * 0.32, progress, opacity);
 }
 
@@ -466,7 +547,10 @@ export function renderMeme(canvas, draft, layout, topCaption, bottomCaption) {
   }
 
   const effect = draft.effect ?? draft.reaction;
-  if (effect) {
+  if (effect?.id === 'energy-orb') {
+    const [x, y, radius] = orbPlacement(draft.point, source, width, height);
+    paintOrb(ctx, x, y, radius, 0.46, 1);
+  } else if (effect) {
     const [x, y] = pointOnCover(draft.point, source, width, height);
     paintEffect(ctx, effect, x, y, width * (source ? 0.27 : 0.42), 0.46, source ? 0.64 : 0.9);
   }
@@ -513,6 +597,10 @@ export function renderMeme(canvas, draft, layout, topCaption, bottomCaption) {
 // Tones are [delay, start Hz, end Hz, length, waveform, gain].
 // Noise bursts are [delay, length, start cutoff, end cutoff, gain].
 const packSounds = {
+  'energy-orb': {
+    tones: [[0, 96, 225, 0.69, 'triangle', 0.24], [0.11, 189, 449, 0.61, 'sine', 0.17], [0.62, 865, 1430, 0.34, 'sine', 0.15], [0.65, 1296, 1728, 0.28, 'sine', 0.09]],
+    bursts: [[0.2, 0.46, 610, 2850, 0.11]],
+  },
   genjutsu: {
     tones: [[0, 158, 64, 0.72, 'triangle', 0.23], [0.17, 220, 78, 0.78, 'sine', 0.19], [0.94, 120, 42, 0.16, 'sine', 0.33], [1.28, 472, 720, 0.38, 'sine', 0.14]],
     bursts: [[0.31, 0.58, 360, 2200, 0.12], [0.94, 0.13, 3800, 340, 0.22]],

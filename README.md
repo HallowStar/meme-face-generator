@@ -38,6 +38,7 @@ Choose **New effects** in the effects library and click any card to preview its 
 
 | Effect | Default trigger | Sound |
 | --- | --- | --- |
+| Energy Orb | Cupped palm facing up | Rising charge and electric chime |
 | Genjutsu Vanish | Wink | Warp hum, vanish snap, and return chime |
 | Shadow Blink | Smirk | Reversed sweep and snap |
 | Rift Portal | Peace sign | Rising portal hum |
@@ -52,6 +53,8 @@ Choose **New effects** in the effects library and click any card to preview its 
 | Checkpoint | Thumbs up | Arcade save jingle |
 
 Genjutsu Vanish fades the entire camera feed out and brings it back. PNG exports keep the captured still and a static effect overlay. The animations and sounds are generated in the browser with Canvas and Web Audio. With reduced motion enabled, the camera shows a static overlay for the new effects.
+
+For **Energy Orb**, keep your palm facing the ceiling and curl your fingers slightly, as if holding a ball. With **Rotate by reaction**, the orb charges after a brief hold and follows your hand until you lower it or turn it away. Keep your wrist and knuckles in view. Try the **Energy Orb** card to preview it with the camera off.
 
 ## How reaction matching works
 
