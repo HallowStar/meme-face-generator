@@ -1,7 +1,12 @@
 // Vocabulary reviewed from Datamuse's /words results for each reaction.
 export const reactionContent = {
   shock: {
-    gif: { id: '6tyvhr7zaoHOYuOtg7', title: 'iShowSpeed shocked', topic: 'ishowspeed-shocked' },
+    topic: 'ishowspeed-shocked',
+    gifs: [
+      { id: '6tyvhr7zaoHOYuOtg7', title: 'iShowSpeed shocked' },
+      { id: 'dQ2hNt4MVbguZ5yu4M', title: 'iShowSpeed in disbelief' },
+      { id: 'RUciiUqoEqWaM3dBGP', title: 'iShowSpeed can’t believe it' },
+    ],
     words: ['shock', 'amazement', 'astonishment'],
     captions: [
       [null, 'PURE {word}'],
@@ -9,7 +14,11 @@ export const reactionContent = {
     ],
   },
   smile: {
-    gif: { id: '9G50jwiTVJtUCZ83bW', title: 'Grinning monkey', topic: 'smiling-monkey' },
+    topic: 'smiling-monkey',
+    gifs: [
+      { id: '9G50jwiTVJtUCZ83bW', title: 'Grinning monkey' },
+      { id: 'dBIvrxdLuk9JrMeU9S', title: 'Smiling cartoon monkey' },
+    ],
     words: ['victory', 'triumph', 'glory'],
     captions: [
       [null, 'SMELLS LIKE {word}'],
@@ -17,7 +26,11 @@ export const reactionContent = {
     ],
   },
   wink: {
-    gif: { id: 'Xbz9rDFWrtyUPlRrmt', title: 'Eko and Miya wink', topic: 'wink' },
+    topic: 'wink',
+    gifs: [
+      { id: 'Xbz9rDFWrtyUPlRrmt', title: 'Eko and Miya wink' },
+      { id: '26gYL9IGJiWMrcewU', title: 'Shalita Grant winks' },
+    ],
     words: ['prank', 'plot', 'hoax'],
     captions: [
       [null, 'WHAT {word}?'],
@@ -25,7 +38,11 @@ export const reactionContent = {
     ],
   },
   thumb: {
-    gif: { id: 'rxVCvZvrxqnJFBdVe5', title: 'Brent Rambo thumbs up', topic: 'thumbs-up' },
+    topic: 'thumbs-up',
+    gifs: [
+      { id: 'rxVCvZvrxqnJFBdVe5', title: 'Brent Rambo thumbs up' },
+      { id: 'w832CKAADJut6lBEOE', title: 'Way to go thumbs-up' },
+    ],
     words: ['approved', 'acceptable', 'admirable'],
     captions: [
       [null, 'CERTIFIED {word}'],
@@ -33,7 +50,11 @@ export const reactionContent = {
     ],
   },
   peace: {
-    gif: { id: 'nFFguNjdeotwc', title: 'Amy Poehler says peace out', topic: 'peace-out' },
+    topic: 'peace-out',
+    gifs: [
+      { id: 'nFFguNjdeotwc', title: 'Amy Poehler says peace out' },
+      { id: 'qoesee6tcblyw', title: 'Napoleon Dynamite peace out' },
+    ],
     words: ['adios', 'so long', 'later', 'bye-bye'],
     captions: [
       [null, '{word}, EVERYONE'],
@@ -41,7 +62,11 @@ export const reactionContent = {
     ],
   },
   palm: {
-    gif: { id: '26FL8soUxrZBtpASQ', title: 'Fergie says hold up', topic: 'hold-up' },
+    topic: 'hold-up',
+    gifs: [
+      { id: '26FL8soUxrZBtpASQ', title: 'Fergie says hold up' },
+      { id: 'cWtkZ6aOHLIGwSCWIx', title: 'Wait a second' },
+    ],
     words: ['break', 'delay', 'hiatus', 'intermission'],
     captions: [
       [null, 'UNSCHEDULED {word}'],
@@ -49,7 +74,11 @@ export const reactionContent = {
     ],
   },
   fist: {
-    gif: { id: '7zczkZlKRJUr7s52ZX', title: 'Power Up by TrueMose', topic: 'power-up' },
+    topic: 'power-up',
+    gifs: [
+      { id: '7zczkZlKRJUr7s52ZX', title: 'Power Up by TrueMose' },
+      { id: 'aHOU7Pg8VRpifMNOv2', title: 'Celebratory fist pump' },
+    ],
     words: ['stamina', 'vigor', 'force', 'intensity'],
     captions: [
       [null, 'MAXIMUM {word} UNLOCKED'],

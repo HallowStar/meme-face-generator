@@ -29,6 +29,7 @@ const labels = {
 };
 const templateButtons = new Map();
 const lastCaptions = new Map();
+const gifPositions = new Map();
 let draft = { label: 'Choose a template or try an effect' };
 let draftRequest = 0;
 let activeGif;
@@ -96,11 +97,14 @@ function updateGifPlayback() {
 }
 
 function showViralMatch(reaction) {
-  activeGif = reactionContent[reaction.id].gif;
+  const { gifs, topic } = reactionContent[reaction.id];
+  const position = gifPositions.get(reaction.id) ?? 0;
+  activeGif = gifs[position];
+  gifPositions.set(reaction.id, (position + 1) % gifs.length);
   if (reduceMotion.matches) playGif = false;
   byId('viral-name').textContent = activeGif.title;
   byId('viral-source').href = 'https://giphy.com/gifs/' + activeGif.id;
-  byId('viral-more').href = 'https://giphy.com/explore/' + activeGif.topic;
+  byId('viral-more').href = 'https://giphy.com/explore/' + topic;
   viralPlayer.title = activeGif.title + ' GIF on GIPHY';
   updateGifPlayback();
   byId('viral-match').hidden = false;
