@@ -1,5 +1,5 @@
 import catalog from './meme-catalog.json?v=flexible-poses' with { type: 'json' };
-import { flexiblePoses } from './flexible-poses.mjs?v=flexible-poses';
+import { flexiblePoses } from './flexible-poses.mjs?v=pose-similarity';
 
 const weightsByReaction = {
   shock: { jaw: 0.55, brow: 0.20, eyes: 0.25 },

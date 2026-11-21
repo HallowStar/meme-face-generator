@@ -19,6 +19,19 @@ const cues = Object.entries(flexiblePoses)
 export function closestFacePose(features, automatic = false) {
   let best = automatic ? null : 'deadpan';
   let strength = automatic ? 1 : 0.57;
+  if (!automatic) {
+    const familiar = {
+      shock: Math.min(features.jaw / 0.43, Math.max(features.brow / 0.35, features.eyes / 0.29)),
+      smile: features.smile / 0.52,
+      wink: Math.min(features.wink / 0.29, features.closedEye / 0.46),
+    };
+    for (const [id, evidence] of Object.entries(familiar)) {
+      if (evidence >= strength) {
+        best = id;
+        strength = evidence;
+      }
+    }
+  }
   for (const [id, key, threshold] of cues) {
     // Ignore ordinary blinks and keep talking or a mild smile from becoming a yawn.
     if (id === 'squint' && features.closedEye > 0.60) continue;

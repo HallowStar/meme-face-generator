@@ -1,8 +1,8 @@
-import { matchReaction } from './meme-matching.mjs?v=flexible-poses';
-import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=flexible-poses';
+import { matchReaction } from './meme-matching.mjs?v=pose-similarity';
+import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=pose-similarity';
 import { reactions, templates } from './presets.mjs?v=editorial';
 import { captureStill, createSoundEffects, renderLive, renderMeme } from './effects.mjs?v=editorial';
-import { startTracking } from './vision.mjs?v=flexible-poses';
+import { startTracking } from './vision.mjs?v=pose-similarity';
 import { pickReactionCaption, reactionContent } from './reaction-content.mjs?v=flexible-poses';
 
 const byId = (id) => document.getElementById(id);
@@ -311,12 +311,12 @@ function setCameraState(state, message = '') {
 
 function captureMatch(id, expression, point, approximate = false) {
   const effect = reactionsById.get(id);
-  if (effect) {
+  if (effect && !approximate) {
     fireReaction(effect, point, false, expression);
     return;
   }
 
-  const pose = { id, ...flexiblePoses[id] };
+  const pose = effect ?? { id, ...flexiblePoses[id] };
   const frame = captureStill(video);
   if (!frame) return;
   clearLiveEffect();

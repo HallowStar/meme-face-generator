@@ -1,4 +1,4 @@
-import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=flexible-poses';
+import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=pose-similarity';
 
 const runtimeBase = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32';
 const modelRoot = 'https://storage.googleapis.com/mediapipe-models';
