@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Turn webcam expressions and hand gestures into captioned memes with effects, sound, and matching GIFs.">
+  <meta name="theme-color" content="#f7f5fc">
+  <title>Meme Cam</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./studio.mjs"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="#studio"><span class="brand-icon" aria-hidden="true">✷</span> Meme Cam</a>
+      <nav aria-label="Main navigation">
+        <a href="#effects">Effects</a>
+        <a href="#templates">Templates</a>
+      </nav>
+      <button id="sound-toggle" class="button sound-button" type="button" aria-pressed="true">
+        <span id="sound-icon" aria-hidden="true">♪</span><span id="sound-label">Sound on</span>
+      </button>
+    </div>
+  </header>
+  <main class="shell" id="studio">
+    <section class="intro" aria-labelledby="page-title">
+      <h1 id="page-title">Make a face.<br class="mobile-break"> <em>Make a meme.</em></h1>
+      <p>Trigger effects and sound with a face reaction or a hand gesture.</p>
+    </section>
+
+    <div class="studio-grid">
+      <section class="panel camera-panel" aria-labelledby="camera-title">
+        <div class="panel-heading">
+          <h2 id="camera-title"><span class="heading-symbol" aria-hidden="true">◉</span> Reaction cam</h2>
+          <span class="camera-status" id="camera-status" data-state="off"><i aria-hidden="true"></i><span>Camera off</span></span>
+        </div>
+        <div class="stage" id="stage" data-camera="off">
+          <video id="camera" playsinline muted aria-label="Mirrored camera preview" hidden></video>
+          <canvas id="live-effects" width="960" height="640" aria-hidden="true"></canvas>
+          <div class="viewfinder" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <span class="stage-spark spark-one" aria-hidden="true">✦</span>
+          <span class="stage-spark spark-two" aria-hidden="true">✷</span>
+          <span class="stage-spark spark-three" aria-hidden="true">✦</span>
+          <div id="camera-prompt" class="stage-prompt">
+            <div class="camera-emblem" aria-hidden="true"><span class="camera-icon"></span></div>
+            <h3 id="stage-title">Ready when you are</h3>
+            <p id="stage-description">Turn on your camera to react live.</p>
+            <div class="stage-actions">
+              <button class="button primary" type="button" id="start-camera">Start camera</button>
+              <button class="button demo-button" type="button" id="demo"><span aria-hidden="true">▷</span> Try demo</button>
+            </div>
+          </div>
+          <div id="effect-caption" class="live-caption" aria-hidden="true" hidden></div>
+        </div>
+        <div class="camera-footer">
+          <div class="tracking-group" aria-label="Tracking status">
+            <span class="tracker" id="face-status" data-active="false">Face idle</span>
+            <span class="tracker" id="hand-status" data-active="false">Hand idle</span>
+          </div>
+          <button class="button quiet-button" type="button" id="stop-camera" hidden>Stop camera</button>
+          <span class="local-label" id="local-label">Camera stays on-device</span>
+        </div>
+        <section class="viral-match" id="viral-match" aria-labelledby="viral-title" hidden>
+          <div class="viral-screen">
+            <iframe id="viral-player" title="Viral reaction GIF" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'" hidden></iframe>
+            <div class="viral-placeholder" id="viral-placeholder" aria-hidden="true">▷</div>
+          </div>
+          <div class="viral-details">
+            <h3 id="viral-title">Viral match</h3>
+            <p id="viral-name"></p>
+            <div class="viral-links">
+              <button class="button quiet-button" id="gif-playback" type="button">Pause GIF</button>
+              <a id="viral-source" target="_blank" rel="noopener noreferrer">View on GIPHY</a>
+              <a id="viral-more" target="_blank" rel="noopener noreferrer">More like this</a>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel editor-panel" aria-labelledby="editor-title">
+        <div class="panel-heading">
+          <h2 id="editor-title"><span class="heading-symbol" aria-hidden="true">✦</span> Meme editor</h2>
+          <span class="format-label">1080 × 1080</span>
+        </div>
+        <div class="editor-body">
+          <div class="preview-mat">
+            <canvas id="meme" width="1080" height="1080" role="img" aria-label="Meme preview"></canvas>
+          </div>
+          <div class="editor-meta">
+            <span id="draft-label">Grumpy Cat template</span>
+            <label class="layout-field" for="layout">Style
+              <select id="layout">
+                <option value="classic">Classic</option>
+                <option value="pov">POV</option>
+                <option value="doge">Doge</option>
+              </select>
+            </label>
+          </div>
+          <div class="caption-fields">
+            <label for="top-caption">Top text
+              <input id="top-caption" maxlength="100" type="text" autocomplete="off" placeholder="Top caption">
+            </label>
+            <label for="bottom-caption">Bottom text
+              <input id="bottom-caption" maxlength="100" type="text" autocomplete="off" placeholder="Bottom caption">
+            </label>
+          </div>
+          <div class="editor-actions">
+            <button class="button quiet-button" type="button" id="new-caption" hidden>New caption</button>
+            <button class="button primary download-button" type="button" id="download" disabled>Download PNG</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <p class="sr-only" id="announcement" role="status"></p>
+    <p class="notice" id="notice" role="status" hidden></p>
+
+    <section class="library" id="effects" aria-labelledby="effects-title">
+      <div class="library-heading">
+        <div><h2 id="effects-title">Effects library</h2><p>Hold a pose on camera or click a card to try it.</p></div>
+        <div class="filters" role="group" aria-label="Filter effects">
+          <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-button" type="button" data-filter="face" aria-pressed="false">Face</button>
+          <button class="filter-button" type="button" data-filter="hand" aria-pressed="false">Hand</button>
+        </div>
+      </div>
+      <div class="effect-grid" id="effect-grid"></div>
+    </section>
+
+    <section class="library templates" id="templates" aria-labelledby="templates-title">
+      <div class="library-heading">
+        <div><h2 id="templates-title">Meme templates</h2><p>Pick a favorite or bring your own image.</p></div>
+        <button class="button upload-button" type="button" id="upload-button"><span aria-hidden="true">+</span> Use my image</button>
+        <input type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" id="upload" hidden>
+      </div>
+      <div class="template-grid" id="template-grid"></div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <span>Meme Cam</span>
+      <span>Camera and image processing happen in your browser.</span>
+    </div>
+  </footer>
+</body>
+</html>
