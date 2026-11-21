@@ -8,19 +8,47 @@ const handGestures = new Map([
   ['Closed_Fist', 'fist'],
 ]);
 
-export function classifyFace(categories) {
+export function describeFace(categories) {
   const scores = new Map(categories?.map(({ categoryName, score }) => [categoryName, score]));
   const score = (name) => scores.get(name) ?? 0;
   const average = (prefix) => (score(prefix + 'Left') + score(prefix + 'Right')) / 2;
-  const jaw = score('jawOpen');
-  if (jaw >= 0.43 && (score('browInnerUp') >= 0.35 || average('eyeWide') >= 0.29)) return 'shock';
   const leftBlink = score('eyeBlinkLeft');
   const rightBlink = score('eyeBlinkRight');
-  const closedEye = Math.max(leftBlink, rightBlink);
-  const openEye = Math.min(leftBlink, rightBlink);
-  if (closedEye >= 0.46 && openEye <= 0.25 && closedEye - openEye >= 0.29) return 'wink';
-  if (average('mouthSmile') >= 0.52 && jaw < 0.43) return 'smile';
+  return {
+    jaw: score('jawOpen'),
+    brow: score('browInnerUp'),
+    eyes: average('eyeWide'),
+    smile: average('mouthSmile'),
+    wink: Math.abs(leftBlink - rightBlink),
+    closedEye: Math.max(leftBlink, rightBlink),
+    openEye: Math.min(leftBlink, rightBlink),
+  };
+}
+
+function classifyExpression({ jaw, brow, eyes, smile, wink, closedEye, openEye }) {
+  if (jaw >= 0.43 && (brow >= 0.35 || eyes >= 0.29)) return 'shock';
+  if (closedEye >= 0.46 && openEye <= 0.25 && wink >= 0.29) return 'wink';
+  if (smile >= 0.52 && jaw < 0.43) return 'smile';
   return null;
+}
+
+export function classifyFace(categories) {
+  return classifyExpression(describeFace(categories));
+}
+
+export function createExpressionWindow() {
+  let previousReaction;
+  let samples = [];
+  return (reaction, features, now) => {
+    if (reaction !== previousReaction) samples = [];
+    previousReaction = reaction;
+    samples = samples.filter((sample) => now - sample.time <= 360);
+    if (!reaction) return null;
+    samples.push({ time: now, features });
+    return Object.fromEntries(Object.keys(features).map((name) => [
+      name, samples.reduce((sum, sample) => sum + sample.features[name], 0) / samples.length,
+    ]));
+  };
 }
 
 function isOpenPalm(points) {
@@ -102,6 +130,7 @@ export function startTracking(video, callbacks) {
   let lastSampleAt = -Infinity;
   let lastVideoTime = -1;
   const gate = createReactionGate();
+  const smoothExpression = createExpressionWindow();
 
   function stop() {
     if (stopped) return;
@@ -127,7 +156,9 @@ export function startTracking(video, callbacks) {
       try {
         const face = faceModel?.detectForVideo(video, now);
         const hand = handModel?.recognizeForVideo(video, now);
-        const faceId = classifyFace(face?.faceBlendshapes[0]?.categories);
+        const features = describeFace(face?.faceBlendshapes[0]?.categories);
+        const faceId = classifyExpression(features);
+        const expression = smoothExpression(faceId, features, now);
         const handId = classifyHand(hand?.gestures[0], hand?.worldLandmarks[0]);
         const facePoints = face?.faceLandmarks[0];
         const handPoints = hand?.landmarks[0];
@@ -137,6 +168,7 @@ export function startTracking(video, callbacks) {
           faceAvailable: Boolean(faceModel), handAvailable: Boolean(handModel),
           faceSeen: Boolean(facePoints), handSeen: Boolean(handPoints),
           faceId, handId, active, point,
+          expression: active && active === faceId ? expression : null,
         });
       } catch {
         fail('Tracking stopped. Restart the camera or try a demo.');

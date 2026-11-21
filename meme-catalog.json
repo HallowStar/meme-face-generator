@@ -1,0 +1,480 @@
+{
+  "shock": [
+    {
+      "id": "6tyvhr7zaoHOYuOtg7",
+      "title": "iShowSpeed shocked",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/6tyvhr7zaoHOYuOtg7",
+      "traits": {
+        "jaw": 0.82,
+        "brow": 0.52,
+        "eyes": 0.58
+      }
+    },
+    {
+      "id": "dQ2hNt4MVbguZ5yu4M",
+      "title": "iShowSpeed in disbelief",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/dQ2hNt4MVbguZ5yu4M",
+      "traits": {
+        "jaw": 0.61,
+        "brow": 0.38,
+        "eyes": 0.3
+      }
+    },
+    {
+      "id": "RUciiUqoEqWaM3dBGP",
+      "title": "iShowSpeed can’t believe it",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/RUciiUqoEqWaM3dBGP",
+      "traits": {
+        "jaw": 0.29,
+        "brow": 0.64,
+        "eyes": 0.73
+      }
+    },
+    {
+      "id": "JJjnYC0upzy36",
+      "title": "Miss J gasps",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/shocked-gif-miss-jay-JJjnYC0upzy36",
+      "traits": {
+        "jaw": 0.57,
+        "brow": 0.44,
+        "eyes": 0.26
+      }
+    },
+    {
+      "id": "qz7fvG3ElTWA8",
+      "title": "Side-eye disbelief",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/wtf-omg-qz7fvG3ElTWA8",
+      "traits": {
+        "jaw": 0.47,
+        "brow": 0.38,
+        "eyes": 0.35
+      }
+    },
+    {
+      "id": "LJPfWhMCs9Rks",
+      "title": "Wide-eyed double take",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/shocked-surprise-LJPfWhMCs9Rks",
+      "traits": {
+        "jaw": 0.4,
+        "brow": 0.61,
+        "eyes": 0.78
+      }
+    },
+    {
+      "id": "fkBRFiKOJQEpjWOOke",
+      "title": "Dead Meat James gives a deadpan reaction",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/deadmeatjames-shocked-this-is-my-face-fkBRFiKOJQEpjWOOke",
+      "traits": {
+        "jaw": 0.43,
+        "brow": 0.31,
+        "eyes": 0.21
+      }
+    },
+    {
+      "id": "gSeLiXkIR9Gf1PIbKv",
+      "title": "Harper puts her hand to her chest",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/paramountplus-paramount-icarly-carly-gSeLiXkIR9Gf1PIbKv",
+      "traits": {
+        "jaw": 0.46,
+        "brow": 0.44,
+        "eyes": 0.25
+      }
+    },
+    {
+      "id": "OluyzCAatv35C",
+      "title": "Dodgeball announcer drops his jaw",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/dodgeball-jaw-drop-OluyzCAatv35C",
+      "traits": {
+        "jaw": 0.61,
+        "brow": 0.27,
+        "eyes": 0.31
+      }
+    },
+    {
+      "id": "surprised-expression",
+      "title": "Surprised expression",
+      "kind": "image",
+      "source": "https://commons.wikimedia.org/wiki/File:Beauty_Girl_Surprise.jpg",
+      "image": "./assets/surprised-expression.jpg",
+      "credit": "Paul Duke · CC BY-SA 2.0 · cropped/captioned in exports",
+      "license": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "traits": {
+        "jaw": 0.5,
+        "brow": 0.445,
+        "eyes": 0.13
+      }
+    }
+  ],
+  "smile": [
+    {
+      "id": "9G50jwiTVJtUCZ83bW",
+      "title": "Grinning monkey",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/9G50jwiTVJtUCZ83bW",
+      "traits": {
+        "smile": 0.94,
+        "jaw": 0.23
+      }
+    },
+    {
+      "id": "dBIvrxdLuk9JrMeU9S",
+      "title": "Smiling cartoon monkey",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/dBIvrxdLuk9JrMeU9S",
+      "traits": {
+        "smile": 0.69,
+        "jaw": 0.12
+      }
+    },
+    {
+      "id": "KEf7gXqvQ8B3SWnUid",
+      "title": "Donkey flashes a toothy smile",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/dreamworks-cute-mood-please-KEf7gXqvQ8B3SWnUid",
+      "traits": {
+        "smile": 0.9,
+        "jaw": 0.11
+      }
+    },
+    {
+      "id": "s3v3rPCRAWmK7hChNX",
+      "title": "Happy dog smiles",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/meme-dog-funny-dogs-s3v3rPCRAWmK7hChNX",
+      "traits": {
+        "smile": 0.67,
+        "jaw": 0.24
+      }
+    },
+    {
+      "id": "88i7qyttln1ZrrZKZx",
+      "title": "Big Brother contestant beams",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/bigbrother-happy-dancing-88i7qyttln1ZrrZKZx",
+      "traits": {
+        "smile": 0.78,
+        "jaw": 0.28
+      }
+    },
+    {
+      "id": "4Pi145hye1ItCpp9GT",
+      "title": "Love Island smile",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/usa-love-island-4Pi145hye1ItCpp9GT",
+      "traits": {
+        "smile": 0.59,
+        "jaw": 0.08
+      }
+    },
+    {
+      "id": "IbfNMwhZKr7lC",
+      "title": "Ear-to-ear grin",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/smile-grin-IbfNMwhZKr7lC",
+      "traits": {
+        "smile": 0.96,
+        "jaw": 0.14
+      }
+    },
+    {
+      "id": "Tlh024W1MbjOUGYl6R",
+      "title": "Marci grins with excitement",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/brownsugarapp-excited-giddy-christmas-joy-Tlh024W1MbjOUGYl6R",
+      "traits": {
+        "smile": 0.91,
+        "jaw": 0.39
+      }
+    },
+    {
+      "id": "laughing-expression",
+      "title": "Laughing expression",
+      "kind": "image",
+      "source": "https://commons.wikimedia.org/wiki/File:Laughing_woman.jpg",
+      "image": "./assets/laughing-expression.jpg",
+      "credit": "Basile Morin · CC BY-SA 4.0 · cropped/captioned in exports",
+      "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "traits": {
+        "smile": 0.968,
+        "jaw": 0.354
+      }
+    },
+    {
+      "id": "gorilla-smile",
+      "title": "Gorilla grin",
+      "kind": "image",
+      "source": "https://commons.wikimedia.org/wiki/File:Gorilla_smile.jpg",
+      "image": "./assets/gorilla-smile.jpg",
+      "credit": "William H. Calvin · CC BY-SA 4.0 · cropped/captioned in exports",
+      "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "traits": {
+        "smile": 0.89,
+        "jaw": 0.22
+      }
+    }
+  ],
+  "wink": [
+    {
+      "id": "Xbz9rDFWrtyUPlRrmt",
+      "title": "Eko and Miya wink",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/Xbz9rDFWrtyUPlRrmt",
+      "traits": {
+        "wink": 0.78,
+        "smile": 0.57,
+        "jaw": 0.12
+      }
+    },
+    {
+      "id": "26gYL9IGJiWMrcewU",
+      "title": "Shalita Grant winks",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/26gYL9IGJiWMrcewU",
+      "traits": {
+        "wink": 0.46,
+        "smile": 0.39,
+        "jaw": 0.09
+      }
+    },
+    {
+      "id": "ui1hpJSyBDWlG",
+      "title": "Michael Scott gives a knowing wink",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/ui1hpJSyBDWlG",
+      "traits": {
+        "wink": 0.64,
+        "smile": 0.42,
+        "jaw": 0.03
+      }
+    },
+    {
+      "id": "JlVkLKuxRSvLy",
+      "title": "Dean Winchester winks",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/dean-winchester-wink-JlVkLKuxRSvLy",
+      "traits": {
+        "wink": 0.52,
+        "smile": 0.4,
+        "jaw": 0.08
+      }
+    },
+    {
+      "id": "dk3TmFZpn6pUI",
+      "title": "Veronica Mars smiles and winks",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/life-thread-dk3TmFZpn6pUI",
+      "traits": {
+        "wink": 0.75,
+        "smile": 0.83,
+        "jaw": 0.32
+      }
+    },
+    {
+      "id": "ePWlG9xYQn7cQ",
+      "title": "John Cusack gives a dramatic wink",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/celebs-fallontonight-john-cusack-ePWlG9xYQn7cQ",
+      "traits": {
+        "wink": 0.9,
+        "smile": 0.51,
+        "jaw": 0.39
+      }
+    },
+    {
+      "id": "6ra84Uso2hoir3YCgb",
+      "title": "Agnes gives a big wink",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/disneyplus-disney-wandavision-wanda-vision-6ra84Uso2hoir3YCgb",
+      "traits": {
+        "wink": 0.96,
+        "smile": 0.77,
+        "jaw": 0.17
+      }
+    }
+  ],
+  "thumb": [
+    {
+      "id": "rxVCvZvrxqnJFBdVe5",
+      "title": "Brent Rambo thumbs up",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/rxVCvZvrxqnJFBdVe5"
+    },
+    {
+      "id": "w832CKAADJut6lBEOE",
+      "title": "Way to go thumbs-up",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/w832CKAADJut6lBEOE"
+    },
+    {
+      "id": "wx64kFvlY7BHxAyZAJ",
+      "title": "Animated thumbs-up",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/wx64kFvlY7BHxAyZAJ"
+    },
+    {
+      "id": "BYoRqTmcgzHcL9TCy1",
+      "title": "Thank-you thumbs-up",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/thank-you-thanks-thumbs-up-BYoRqTmcgzHcL9TCy1"
+    },
+    {
+      "id": "BPUk6YDGC2N5TYbfvU",
+      "title": "MonkeyMedia thumbs-up",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/monkeymedia-gernotpirker-monkeygifpaket-BPUk6YDGC2N5TYbfvU"
+    },
+    {
+      "id": "RIhNQOjGa39Ze",
+      "title": "Ace Ventura gives a thumbs-up",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/ace-ventura-good-job-RIhNQOjGa39Ze"
+    },
+    {
+      "id": "LVIbmaUwpRJ1C",
+      "title": "Jeremy Clarkson approves",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/thumbs-up-sarcastic-LVIbmaUwpRJ1C"
+    }
+  ],
+  "peace": [
+    {
+      "id": "nFFguNjdeotwc",
+      "title": "Amy Poehler says peace out",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/nFFguNjdeotwc"
+    },
+    {
+      "id": "qoesee6tcblyw",
+      "title": "Napoleon Dynamite peace out",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/qoesee6tcblyw"
+    },
+    {
+      "id": "u29DEdmVgcRnq",
+      "title": "Sailor Moon says peace",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/sailor-moon-peace-out-u29DEdmVgcRnq"
+    },
+    {
+      "id": "qwXy3C5TlURvSl0vXk",
+      "title": "Luke Alexander signs off",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/peace-out-sign-qwXy3C5TlURvSl0vXk"
+    },
+    {
+      "id": "htdLDGtKIqEDLEdDep",
+      "title": "Fresh Prince peace sign",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/thefreshprinceofbelair-season-2-the-fresh-prince-of-bel-air-htdLDGtKIqEDLEdDep"
+    },
+    {
+      "id": "3oEjI835IVsOBa7RN6",
+      "title": "Ringo Starr flashes a peace sign",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/ringopeaceandlove-3oEjI835IVsOBa7RN6"
+    },
+    {
+      "id": "rrLt0FcGrDeBq",
+      "title": "Peace sign and walk-off",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/reactiongifs-rrLt0FcGrDeBq"
+    }
+  ],
+  "palm": [
+    {
+      "id": "26FL8soUxrZBtpASQ",
+      "title": "Fergie says hold up",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/26FL8soUxrZBtpASQ"
+    },
+    {
+      "id": "cWtkZ6aOHLIGwSCWIx",
+      "title": "Wait a second",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/cWtkZ6aOHLIGwSCWIx"
+    },
+    {
+      "id": "MMvuqCP1N1EUE",
+      "title": "Let me stop you right there",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/queue-stop-let-me-you-MMvuqCP1N1EUE"
+    },
+    {
+      "id": "xUNda0VdiVUizJOHoA",
+      "title": "Rocko says stop right there",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/splat-nicksplat-rockos-modern-life-xUNda0VdiVUizJOHoA"
+    },
+    {
+      "id": "WT43bMajNbe6CrG9hn",
+      "title": "Golden Girls say stop",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/tvland-gg-golden-girls-golderngirls-WT43bMajNbe6CrG9hn"
+    },
+    {
+      "id": "tWbCSOuToelw3prTfu",
+      "title": "Jimmy Fallon asks for calm",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/fallontonight-jimmy-fallon-calm-down-tonightshow-tWbCSOuToelw3prTfu"
+    },
+    {
+      "id": "TlK63EHLGxiPCSCx2P6",
+      "title": "Stop that right now",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/troywagner-right-now-stop-that-TlK63EHLGxiPCSCx2P6"
+    }
+  ],
+  "fist": [
+    {
+      "id": "7zczkZlKRJUr7s52ZX",
+      "title": "Power Up by TrueMose",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/7zczkZlKRJUr7s52ZX"
+    },
+    {
+      "id": "aHOU7Pg8VRpifMNOv2",
+      "title": "Celebratory fist pump",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/aHOU7Pg8VRpifMNOv2"
+    },
+    {
+      "id": "WoYwgrfZP4yw8",
+      "title": "Will Ferrell celebrates",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/movie-happy-excited-WoYwgrfZP4yw8"
+    },
+    {
+      "id": "o75ajIFH0QnQC3nCeD",
+      "title": "Erin fist-pumps",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/theoffice-o75ajIFH0QnQC3nCeD"
+    },
+    {
+      "id": "fkD36jhiqzJ9m",
+      "title": "Peppers does a victory fist pump",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/reaction-fkD36jhiqzJ9m"
+    },
+    {
+      "id": "DDivDbGelclQjBtQ59",
+      "title": "Jimmy Fallon fist-pumps",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/fallontonight-excited-jimmy-fallon-tonight-show-DDivDbGelclQjBtQ59"
+    },
+    {
+      "id": "26gsobowozGM9umBi",
+      "title": "Ron Swanson shakes his fist in triumph",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/good-success-ron-swanson-26gsobowozGM9umBi"
+    }
+  ]
+}

@@ -32,6 +32,14 @@ Each reaction produces one editable draft and a matching GIF preview. Repeating 
 
 Hold the pose briefly and release it before trying again. Keep your face and hand well lit and inside the frame. One face and one hand can be tracked at a time. Expression rules use facial movements as controls and can vary by person and lighting.
 
+## How reaction matching works
+
+Meme Cam averages MediaPipe facial expression scores over the pose hold. It filters the bundled catalog by reaction, then ranks matches using the traits that matter for that reaction. For example, jaw opening carries the most weight for shock, and the difference between the two eyes carries the most weight for a wink. Hand matches use the recognized gesture. Demo taps and low-similarity poses rotate through that reaction's collection.
+
+The catalog contains 52 GIF references and three editable photos. **Next match** browses alternatives. **Use image** puts a matched photo in the editor with your existing captions. The resulting PNG includes the photo credit and license. The GIF player loads clips directly from GIPHY. Webcam frames and expression scores stay in your browser.
+
+GIF profiles are hand-tagged. The two human photo profiles use measurements from the Face Landmarker image model. The gorilla photo uses a hand-tagged profile. To add an entry, use the matching group in `meme-catalog.json` and include the media source. Editable images also need a local asset and a credit and license. [Face Landmarker](https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker?tab=Web) · [GIPHY embeds](https://support.giphy.com/hc/en-us/articles/360020330711-How-to-Embed-a-GIF)
+
 ## Stack
 
 - HTML, CSS, and vanilla JavaScript ES modules
@@ -47,6 +55,7 @@ The GIF preview loads an official GIPHY embed over the internet. Use **Play GIF*
 
 ## Image credits
 
+- The surprised expression is by Paul Duke under CC BY-SA 2.0. The laughing expression is by Basile Morin and the gorilla grin is by William H. Calvin, both under CC BY-SA 4.0. Exported adaptations retain their respective licenses. [Surprised expression](https://commons.wikimedia.org/wiki/File:Beauty_Girl_Surprise.jpg) · [Laughing expression](https://commons.wikimedia.org/wiki/File:Laughing_woman.jpg) · [Gorilla grin](https://commons.wikimedia.org/wiki/File:Gorilla_smile.jpg)
 - Grumpy Cat photo by Gage Skidmore. The cropped and captioned Grumpy Cat template exports use the same CC BY-SA 3.0 license as the source photo. [Source](https://commons.wikimedia.org/wiki/File:Grumpy_Cat_by_Gage_Skidmore.jpg) · [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
 - Taiki photo by Roberto Vasarri, released to the public domain. Euterpia used this photo in a CC0 Doge remix. [Photo](https://commons.wikimedia.org/wiki/File:Shiba_inu_taiki.jpg) · [Doge remix](https://commons.wikimedia.org/wiki/File:Doge_homemade_meme.jpg)
 - *This is fine* by David Revoy. The app crops and captions the illustration. [Source](https://www.peppercarrot.com/en/viewer/misc__2025-07-01_This-is-fine_by-David-Revoy.html) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)

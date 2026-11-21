@@ -1,7 +1,8 @@
+import { matchReaction } from './meme-matching.mjs?v=expression-matching';
 import { reactions, templates } from './presets.mjs?v=editorial';
 import { captureStill, createSoundEffects, renderLive, renderMeme } from './effects.mjs?v=editorial';
-import { startTracking } from './vision.mjs';
-import { pickReactionCaption, reactionContent } from './reaction-content.mjs';
+import { startTracking } from './vision.mjs?v=expression-matching';
+import { pickReactionCaption, reactionContent } from './reaction-content.mjs?v=expression-matching';
 
 const byId = (id) => document.getElementById(id);
 const video = byId('camera');
@@ -30,10 +31,14 @@ const labels = {
 };
 const templateButtons = new Map();
 const lastCaptions = new Map();
-const gifPositions = new Map();
+const matchPositions = new Map();
 let draft = { label: 'Choose a template or try an effect' };
 let draftRequest = 0;
-let activeGif;
+let activeMatch;
+let matchItems = [];
+let matchIndex = 0;
+let matchMode;
+let matchTopic;
 let playGif = !reduceMotion.matches;
 let currentEffect;
 let animationFrame;
@@ -85,33 +90,87 @@ function generateCaptions(reaction, current) {
 }
 
 function updateGifPlayback() {
-  if (!activeGif) return;
-  if (playGif) {
-    const url = 'https://giphy.com/embed/' + activeGif.id;
+  if (!activeMatch) return;
+  const isGif = activeMatch.kind === 'gif';
+  if (isGif && playGif) {
+    const url = 'https://giphy.com/embed/' + activeMatch.id;
     if (viralPlayer.getAttribute('src') !== url) viralPlayer.src = url;
-  } else {
+  } else if (viralPlayer.hasAttribute('src')) {
     viralPlayer.removeAttribute('src');
   }
-  viralPlayer.hidden = !playGif;
-  byId('viral-placeholder').hidden = playGif;
+  viralPlayer.hidden = !isGif || !playGif;
+  byId('viral-placeholder').hidden = !isGif || playGif;
+  gifPlayback.hidden = !isGif;
   gifPlayback.textContent = playGif ? 'Pause GIF' : 'Play GIF';
 }
 
-function showViralMatch(reaction, advance = true) {
-  const { gifs, topic } = reactionContent[reaction.id];
-  const position = gifPositions.get(reaction.id) ?? 0;
-  activeGif = gifs[position];
-  if (advance) gifPositions.set(reaction.id, (position + 1) % gifs.length);
-  if (reduceMotion.matches) playGif = false;
-  byId('viral-name').textContent = activeGif.title;
-  byId('viral-source').href = 'https://giphy.com/gifs/' + activeGif.id;
-  byId('viral-more').href = 'https://giphy.com/explore/' + topic;
-  viralPlayer.title = activeGif.title + ' GIF on GIPHY';
+function renderMatch() {
+  activeMatch = matchItems[matchIndex];
+  const isImage = activeMatch.kind === 'image';
+  const image = byId('match-image');
+  image.hidden = !isImage;
+  if (isImage) {
+    image.src = activeMatch.image;
+    image.alt = activeMatch.title;
+  } else if (image.hasAttribute('src')) {
+    image.removeAttribute('src');
+  }
+
+  byId('viral-name').textContent = activeMatch.title;
+  byId('match-note').textContent = matchMode + (isImage ? ' · ' + activeMatch.credit : '');
+  const source = byId('viral-source');
+  source.href = activeMatch.source;
+  source.textContent = isImage ? 'Image source and license' : 'View on GIPHY';
+  byId('viral-more').href = 'https://giphy.com/explore/' + matchTopic;
+  byId('use-match-image').hidden = !isImage;
+  viralPlayer.title = activeMatch.title + ' GIF on GIPHY';
   updateGifPlayback();
   byId('viral-screen').hidden = false;
   byId('viral-links').hidden = false;
-
+  byId('next-match').disabled = matchItems.length < 2;
 }
+
+function showReactionMatch(reaction, expression = null, initial = false) {
+  const position = matchPositions.get(reaction.id) ?? 0;
+  const result = matchReaction(reaction.id, expression, position);
+  if (!result.items.length) return;
+  if (!initial) matchPositions.set(reaction.id, (position + 1) % result.items.length);
+  matchItems = result.items;
+  matchIndex = 0;
+  matchMode = initial ? 'Sample match' : {
+    expression: 'Matched to your expression',
+    gesture: 'Matched to your gesture',
+    rotation: 'From the reaction collection',
+  }[result.mode];
+  matchTopic = reactionContent[reaction.id].topic;
+  if (reduceMotion.matches) playGif = false;
+  renderMatch();
+}
+
+byId('next-match').addEventListener('click', () => {
+  matchIndex = (matchIndex + 1) % matchItems.length;
+  if (reduceMotion.matches) playGif = false;
+  renderMatch();
+  announce(activeMatch.title);
+});
+
+byId('use-match-image').addEventListener('click', async () => {
+  const match = activeMatch;
+  if (match?.kind !== 'image') return;
+  const request = ++draftRequest;
+  try {
+    const image = await loadImage(match.image);
+    if (request !== draftRequest || match !== activeMatch) return;
+    setDraft({
+      template: match, image, reaction: draft.reaction, label: match.title + ' image',
+    }, topCaption.value, bottomCaption.value);
+    notify('');
+    announce(match.title + ' is ready in the meme editor.');
+    showEditor();
+  } catch {
+    if (request === draftRequest) notify('The match image could not load. Try another match.');
+  }
+});
 
 function loadImage(url) {
   const image = new Image();
@@ -162,7 +221,7 @@ function drawLiveEffect(reaction, still, point, progress) {
   renderLive(liveCanvas, reaction, still, point, progress);
 }
 
-function fireReaction(reaction, position, manual = false) {
+function fireReaction(reaction, position, manual = false, expression = null) {
   clearLiveEffect();
   ++draftRequest;
 
@@ -172,7 +231,7 @@ function fireReaction(reaction, position, manual = false) {
   const captions = generateCaptions(reaction);
   currentEffect = action;
   setDraft(action, captions.top, captions.bottom);
-  showViralMatch(reaction);
+  showReactionMatch(reaction, expression);
   announce(reaction.name + ' effect. A new meme and viral match are ready.');
 
   const caption = byId('effect-caption');
@@ -254,7 +313,7 @@ function trackFrame(sample) {
     if (seen) text = matched ? '· ' + matched : 'detected';
     updateTracker(key + '-status', type, text, seen);
   }
-  if (sample.active) fireReaction(reactionsById.get(sample.active), sample.point);
+  if (sample.active) fireReaction(reactionsById.get(sample.active), sample.point, false, sample.expression);
 }
 
 function stopCamera() {
@@ -478,7 +537,7 @@ downloadButton.addEventListener('click', () => {
 });
 
 renderDraft();
-showViralMatch(reactionsById.get('shock'), false);
+showReactionMatch(reactionsById.get('shock'), null, true);
 void chooseTemplate(templates[0], true);
 void Promise.all([
   document.fonts.load('20px "Archivo Black"'),

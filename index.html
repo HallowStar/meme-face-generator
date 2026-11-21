@@ -6,8 +6,8 @@
   <meta name="description" content="Turn webcam expressions and hand gestures into captioned memes with effects, sound, and matching GIFs.">
   <meta name="theme-color" content="#f7f3e9">
   <title>Meme Cam</title>
-  <link rel="stylesheet" href="./styles.css?v=results-column">
-  <script type="module" src="./studio.mjs?v=aligned-panels"></script>
+  <link rel="stylesheet" href="./styles.css?v=expression-matching">
+  <script type="module" src="./studio.mjs?v=expression-matching"></script>
   <script type="module" src="./motion.mjs?v=editorial"></script>
 </head>
 <body>
@@ -81,13 +81,17 @@
         <section class="viral-match" id="viral-match" aria-labelledby="viral-title">
           <div class="viral-screen" id="viral-screen" hidden>
             <iframe id="viral-player" title="Viral reaction GIF" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'" hidden></iframe>
+            <img id="match-image" alt="" hidden>
             <div class="viral-placeholder" id="viral-placeholder" aria-hidden="true">▷</div>
           </div>
           <div class="viral-details">
             <h3 id="viral-title">Viral match</h3>
             <p id="viral-name">iShowSpeed shocked</p>
+            <p class="match-note" id="match-note"></p>
             <div class="viral-links" id="viral-links" hidden>
               <button class="button quiet-button" id="gif-playback" type="button">Pause GIF</button>
+              <button class="button quiet-button" id="next-match" type="button">Next match</button>
+              <button class="button quiet-button" id="use-match-image" type="button" hidden>Use image</button>
               <a id="viral-source" target="_blank" rel="noopener noreferrer">View on GIPHY</a>
               <a id="viral-more" target="_blank" rel="noopener noreferrer">More like this</a>
             </div>
