@@ -28,11 +28,14 @@
       <p>Trigger effects and sound with a face reaction or a hand gesture.</p>
     </section>
 
-    <div class="studio-grid">
+    <div class="studio-grid" id="studio-grid">
       <section class="panel camera-panel" aria-labelledby="camera-title">
         <div class="panel-heading">
           <h2 id="camera-title"><span class="heading-symbol" aria-hidden="true">◉</span> Reaction cam</h2>
-          <span class="camera-status" id="camera-status" data-state="off"><i aria-hidden="true"></i><span>Camera off</span></span>
+          <div class="camera-heading-actions">
+            <span class="camera-status" id="camera-status" data-state="off"><i aria-hidden="true"></i><span>Camera off</span></span>
+            <button class="button quiet-button" type="button" id="expand-camera" aria-controls="studio-grid">Expand camera</button>
+          </div>
         </div>
         <div class="stage" id="stage" data-camera="off">
           <video id="camera" playsinline muted aria-label="Mirrored camera preview" hidden></video>
@@ -60,6 +63,42 @@
           <button class="button quiet-button" type="button" id="stop-camera" hidden>Stop camera</button>
           <span class="local-label" id="local-label">Camera stays on-device</span>
         </div>
+      </section>
+
+      <div class="results-column">
+        <section class="panel editor-panel" aria-labelledby="editor-title">
+          <div class="panel-heading">
+            <h2 id="editor-title"><span class="heading-symbol" aria-hidden="true">✦</span> Meme editor</h2>
+            <span class="format-label">1080 × 1080</span>
+          </div>
+          <div class="editor-body">
+            <div class="preview-mat">
+              <canvas id="meme" width="1080" height="1080" role="img" aria-label="Meme preview"></canvas>
+            </div>
+            <div class="editor-meta">
+              <span id="draft-label">Grumpy Cat template</span>
+              <label class="layout-field" for="layout">Style
+                <select id="layout">
+                  <option value="classic">Classic</option>
+                  <option value="pov">POV</option>
+                  <option value="doge">Doge</option>
+                </select>
+              </label>
+            </div>
+            <div class="caption-fields">
+              <label for="top-caption">Top text
+                <input id="top-caption" maxlength="100" type="text" autocomplete="off" placeholder="Top caption">
+              </label>
+              <label for="bottom-caption">Bottom text
+                <input id="bottom-caption" maxlength="100" type="text" autocomplete="off" placeholder="Bottom caption">
+              </label>
+            </div>
+            <div class="editor-actions">
+              <button class="button quiet-button" type="button" id="new-caption" hidden>New caption</button>
+              <button class="button primary download-button" type="button" id="download" disabled>Download PNG</button>
+            </div>
+          </div>
+        </section>
         <section class="viral-match" id="viral-match" aria-labelledby="viral-title" hidden>
           <div class="viral-screen">
             <iframe id="viral-player" title="Viral reaction GIF" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'" hidden></iframe>
@@ -75,41 +114,7 @@
             </div>
           </div>
         </section>
-      </section>
-
-      <section class="panel editor-panel" aria-labelledby="editor-title">
-        <div class="panel-heading">
-          <h2 id="editor-title"><span class="heading-symbol" aria-hidden="true">✦</span> Meme editor</h2>
-          <span class="format-label">1080 × 1080</span>
-        </div>
-        <div class="editor-body">
-          <div class="preview-mat">
-            <canvas id="meme" width="1080" height="1080" role="img" aria-label="Meme preview"></canvas>
-          </div>
-          <div class="editor-meta">
-            <span id="draft-label">Grumpy Cat template</span>
-            <label class="layout-field" for="layout">Style
-              <select id="layout">
-                <option value="classic">Classic</option>
-                <option value="pov">POV</option>
-                <option value="doge">Doge</option>
-              </select>
-            </label>
-          </div>
-          <div class="caption-fields">
-            <label for="top-caption">Top text
-              <input id="top-caption" maxlength="100" type="text" autocomplete="off" placeholder="Top caption">
-            </label>
-            <label for="bottom-caption">Bottom text
-              <input id="bottom-caption" maxlength="100" type="text" autocomplete="off" placeholder="Bottom caption">
-            </label>
-          </div>
-          <div class="editor-actions">
-            <button class="button quiet-button" type="button" id="new-caption" hidden>New caption</button>
-            <button class="button primary download-button" type="button" id="download" disabled>Download PNG</button>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
     <p class="sr-only" id="announcement" role="status"></p>
     <p class="notice" id="notice" role="status" hidden></p>

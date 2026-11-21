@@ -10,6 +10,7 @@ const liveCanvas = byId('live-effects');
 const memeCanvas = byId('meme');
 const startButton = byId('start-camera');
 const stopButton = byId('stop-camera');
+const expandButton = byId('expand-camera');
 const demoButton = byId('demo');
 const downloadButton = byId('download');
 const newCaptionButton = byId('new-caption');
@@ -282,6 +283,24 @@ startButton.addEventListener('click', () => {
 stopButton.addEventListener('click', () => {
   stopCamera();
   startButton.focus({ preventScroll: true });
+});
+
+function setCameraView(expanded) {
+  document.body.classList.toggle('camera-view', expanded);
+  expandButton.textContent = expanded ? 'Exit camera view' : 'Expand camera';
+  if (expanded) window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+expandButton.addEventListener('click', () => {
+  setCameraView(!document.body.classList.contains('camera-view'));
+});
+
+document.querySelector('.wordmark').addEventListener('click', () => setCameraView(false));
+
+window.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape' || event.defaultPrevented || !document.body.classList.contains('camera-view')) return;
+  setCameraView(false);
+  expandButton.focus({ preventScroll: true });
 });
 
 demoButton.addEventListener('click', () => fireReaction(reactionsById.get('shock'), undefined, true));

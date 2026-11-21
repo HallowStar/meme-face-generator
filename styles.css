@@ -59,7 +59,7 @@ nav a:hover { color: var(--purple-dark); }
 
 .studio-grid { display: grid; grid-template-columns: minmax(0, 1.67fr) minmax(0, 1fr); align-items: stretch; gap: 20px; }
 .panel { min-width: 0; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: var(--shadow); }
-.camera-panel { display: flex; flex-direction: column; }
+.camera-panel { display: flex; flex-direction: column; align-self: start; }
 .editor-panel { align-self: start; }
 .panel-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 62px; padding-inline: 17px; }
 .panel-heading h2 { display: flex; align-items: center; gap: 9px; font-size: 21px; letter-spacing: -.045em; }
@@ -254,4 +254,26 @@ select { appearance: none; color: var(--ink); border: 1px solid var(--line); bor
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; scroll-behavior: auto !important; }
   .effect-card:hover { transform: none; }
+}
+
+.results-column { display: grid; align-self: start; gap: 13px; min-width: 0; }
+.results-column .viral-match { margin: 0; grid-template-columns: minmax(0, 40%) minmax(0, 1fr); }
+.camera-heading-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 7px; }
+.camera-heading-actions .button { min-height: 34px; padding-inline: 10px; font-size: 14px; }
+.camera-view .site-header nav,
+.camera-view .intro,
+.camera-view .library,
+.camera-view .site-footer { display: none; }
+.camera-view .sound-button { margin-left: auto; }
+.camera-view main { width: calc(100% - 40px); padding-block: 18px; }
+.camera-view .studio-grid { grid-template-columns: minmax(0, 1fr) minmax(300px, 28%); align-items: start; }
+.camera-view .stage { min-height: max(410px, calc(100dvh - 225px)); }
+@media (max-width: 800px) {
+  .camera-view main { width: calc(100% - 24px); padding-block: 12px; }
+  .camera-view .studio-grid { grid-template-columns: 1fr; }
+  .camera-view .stage { min-height: max(340px, 60dvh); }
+}
+@media (max-width: 480px) {
+  .camera-heading-actions { padding-block: 5px; }
+  .camera-heading-actions .button { min-height: 31px; padding-inline: 7px; }
 }

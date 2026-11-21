@@ -12,6 +12,8 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 Open [Meme Cam on localhost](http://localhost:8000) in Chrome. Click **Start camera** and allow webcam access. For a camera-free preview, click **Try demo** or try an effect card. The page uses a visible camera preview and keeps all webcam frames and uploaded images in the browser. The app requests video only.
 
+Click **Expand camera** for a larger feed with the meme editor and GIF preview beside it on desktop. On small screens, the results sit below the feed. Click **Exit camera view** or press Escape to return to the studio.
+
 If port 8000 is in use, choose another port in the command and browser URL.
 
 Each reaction produces one editable draft and a matching GIF preview. Repeating a reaction cycles through its GIFs. Change its top text, bottom text, or caption style, or use **New caption** to reroll both lines while keeping the image. Click **Download PNG** to save a 1080 × 1080 image. The template library includes Grumpy Cat, the Shiba photo used for a published Doge remix, and David Revoy’s illustrated *This is fine* remix. **Use my image** opens a photo from your device.
