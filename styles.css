@@ -297,3 +297,5 @@ select { appearance: none; color: var(--ink); border: 1px solid var(--line); bor
   .camera-heading-actions { padding-block: 5px; }
   .camera-heading-actions .button { min-height: 31px; padding-inline: 7px; }
 }
+
+#gif-demo { margin-top: 8px; }

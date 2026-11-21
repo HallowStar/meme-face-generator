@@ -6,8 +6,8 @@
   <meta name="description" content="Turn webcam expressions and hand gestures into captioned memes with effects, sound, and matching GIFs.">
   <meta name="theme-color" content="#f7f5fc">
   <title>Meme Cam</title>
-  <link rel="stylesheet" href="./styles.css?v=large-gif">
-  <script type="module" src="./studio.mjs?v=fullscreen"></script>
+  <link rel="stylesheet" href="./styles.css?v=visible-match">
+  <script type="module" src="./studio.mjs?v=visible-match"></script>
 </head>
 <body>
   <header class="site-header">
@@ -66,6 +66,22 @@
       </section>
 
       <div class="results-column">
+        <section class="viral-match" id="viral-match" aria-labelledby="viral-title">
+          <div class="viral-screen" id="viral-screen" hidden>
+            <iframe id="viral-player" title="Viral reaction GIF" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'" hidden></iframe>
+            <div class="viral-placeholder" id="viral-placeholder" aria-hidden="true">▷</div>
+          </div>
+          <div class="viral-details">
+            <h3 id="viral-title">Viral match</h3>
+            <p id="viral-name">Make a reaction or try a demo to see a GIF.</p>
+            <button class="button quiet-button" type="button" id="gif-demo">Try GIF demo</button>
+            <div class="viral-links" id="viral-links" hidden>
+              <button class="button quiet-button" id="gif-playback" type="button">Pause GIF</button>
+              <a id="viral-source" target="_blank" rel="noopener noreferrer">View on GIPHY</a>
+              <a id="viral-more" target="_blank" rel="noopener noreferrer">More like this</a>
+            </div>
+          </div>
+        </section>
         <section class="panel editor-panel" aria-labelledby="editor-title">
           <div class="panel-heading">
             <h2 id="editor-title"><span class="heading-symbol" aria-hidden="true">✦</span> Meme editor</h2>
@@ -96,21 +112,6 @@
             <div class="editor-actions">
               <button class="button quiet-button" type="button" id="new-caption" hidden>New caption</button>
               <button class="button primary download-button" type="button" id="download" disabled>Download PNG</button>
-            </div>
-          </div>
-        </section>
-        <section class="viral-match" id="viral-match" aria-labelledby="viral-title" hidden>
-          <div class="viral-screen">
-            <iframe id="viral-player" title="Viral reaction GIF" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'" hidden></iframe>
-            <div class="viral-placeholder" id="viral-placeholder" aria-hidden="true">▷</div>
-          </div>
-          <div class="viral-details">
-            <h3 id="viral-title">Viral match</h3>
-            <p id="viral-name"></p>
-            <div class="viral-links">
-              <button class="button quiet-button" id="gif-playback" type="button">Pause GIF</button>
-              <a id="viral-source" target="_blank" rel="noopener noreferrer">View on GIPHY</a>
-              <a id="viral-more" target="_blank" rel="noopener noreferrer">More like this</a>
             </div>
           </div>
         </section>

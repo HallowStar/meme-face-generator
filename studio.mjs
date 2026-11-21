@@ -108,7 +108,12 @@ function showViralMatch(reaction) {
   byId('viral-more').href = 'https://giphy.com/explore/' + topic;
   viralPlayer.title = activeGif.title + ' GIF on GIPHY';
   updateGifPlayback();
-  byId('viral-match').hidden = false;
+  byId('viral-screen').hidden = false;
+  byId('viral-links').hidden = false;
+  const gifDemo = byId('gif-demo');
+  const moveFocus = document.activeElement === gifDemo;
+  gifDemo.hidden = true;
+  if (moveFocus) gifPlayback.focus({ preventScroll: true });
 }
 
 function loadImage(url) {
@@ -316,7 +321,9 @@ window.addEventListener('keydown', (event) => {
   exitCameraView();
 });
 
-demoButton.addEventListener('click', () => fireReaction(reactionsById.get('shock'), undefined, true));
+for (const button of [demoButton, byId('gif-demo')]) {
+  button.addEventListener('click', () => fireReaction(reactionsById.get('shock'), undefined, true));
+}
 window.addEventListener('pagehide', stopCamera);
 
 soundButton.addEventListener('click', () => {
