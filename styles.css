@@ -128,7 +128,7 @@ nav a:hover { color: var(--purple-dark); }
 
 .viral-match {
   display: grid;
-  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: 15px;
   padding: 8px;
@@ -240,7 +240,7 @@ select { appearance: none; color: var(--ink); border: 1px solid var(--line); bor
   .stage { min-height: 295px; margin-inline: 9px; }
   .panel-heading { min-height: 52px; padding-inline: 12px; }
   .camera-footer { padding-inline: 10px; }
-  .viral-match { grid-template-columns: minmax(0, 40%) minmax(0, 1fr); gap: 9px; margin-inline: 9px; }
+  .viral-match { gap: 9px; }
   .spark-one { left: 13%; font-size: 23px; }
   .spark-two { right: 14%; top: 18%; bottom: auto; font-size: 26px; }
   .library-heading { align-items: flex-start; flex-wrap: wrap; }
@@ -257,7 +257,7 @@ select { appearance: none; color: var(--ink); border: 1px solid var(--line); bor
 }
 
 .results-column { display: grid; align-self: start; gap: 13px; min-width: 0; }
-.results-column .viral-match { margin: 0; grid-template-columns: minmax(0, 40%) minmax(0, 1fr); }
+.results-column .viral-match { margin: 0; }
 .camera-heading-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 7px; }
 .camera-heading-actions .button { min-height: 34px; padding-inline: 10px; font-size: 14px; }
 .camera-view { overflow: hidden; }
