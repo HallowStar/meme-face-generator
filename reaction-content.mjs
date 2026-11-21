@@ -59,9 +59,11 @@ export const reactionContent = {
 };
 
 export function pickReactionCaption(reaction, excluded) {
-  const { words, captions } = reactionContent[reaction.id];
-  const choices = captions.flatMap(([top, bottom]) => (
-    words.map((word) => ({ top: top ?? reaction.top, bottom: bottom.replace('{word}', word.toUpperCase()) }))
-  )).filter(({ top, bottom }) => !excluded.some((pair) => top === pair?.top && bottom === pair?.bottom));
-  return choices[Math.floor(Math.random() * choices.length)];
+  const content = reactionContent[reaction.id];
+  const choices = content ? content.captions.flatMap(([top, bottom]) => (
+    content.words.map((word) => ({ top: top ?? reaction.top, bottom: bottom.replace('{word}', word.toUpperCase()) }))
+  )) : ['ME IN THIS EXACT MOMENT', 'THE FACE SAYS IT ALL', 'WHEN IT FINALLY SINKS IN']
+    .map((top) => ({ top, bottom: reaction.title }));
+  const available = choices.filter(({ top, bottom }) => !excluded.some((pair) => top === pair?.top && bottom === pair?.bottom));
+  return available[Math.floor(Math.random() * available.length)];
 }

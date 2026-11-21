@@ -36,7 +36,9 @@ Hold the pose briefly and release it before trying again. Keep your face and han
 
 Meme Cam averages MediaPipe facial expression scores over the pose hold. It filters the bundled catalog by reaction, then ranks matches using the traits that matter for that reaction. For example, jaw opening carries the most weight for shock, and the difference between the two eyes carries the most weight for a wink. Hand matches use the recognized gesture. Demo taps and low-similarity poses rotate through that reaction's collection.
 
-The catalog contains 52 GIF references and three editable photos. **Next match** browses alternatives. **Use image** puts a matched photo in the editor with your existing captions. The resulting PNG includes the photo credit and license. The GIF player loads clips directly from GIPHY. Webcam frames and expression scores stay in your browser.
+Matching also works independently of the effects library. Hold a smirk, skeptical look, pout, puffed cheeks, scowl, frown, yawn, thumbs-down, pointing-up gesture, or “I love you” sign to get a match and a captioned still. For subtle or unusual facial poses, turn on the camera and click **Match my pose**. It picks the closest expression available in the catalog, including a deadpan option.
+
+The catalog contains 84 GIF references and three editable photos. **Next match** browses alternatives. **Use image** puts a matched photo in the editor with your existing captions. The resulting PNG includes the photo credit and license. The GIF player loads clips directly from GIPHY. Webcam frames and expression scores stay in your browser.
 
 GIF profiles are hand-tagged. The two human photo profiles use measurements from the Face Landmarker image model. The gorilla photo uses a hand-tagged profile. To add an entry, use the matching group in `meme-catalog.json` and include the media source. Editable images also need a local asset and a credit and license. [Face Landmarker](https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker?tab=Web) · [GIPHY embeds](https://support.giphy.com/hc/en-us/articles/360020330711-How-to-Embed-a-GIF)
 

@@ -1,3 +1,5 @@
+import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=flexible-poses';
+
 const runtimeBase = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32';
 const modelRoot = 'https://storage.googleapis.com/mediapipe-models';
 const sampleInterval = 1000 / 12;
@@ -6,6 +8,9 @@ const handGestures = new Map([
   ['Victory', 'peace'],
   ['Open_Palm', 'palm'],
   ['Closed_Fist', 'fist'],
+  ['Thumb_Down', 'down'],
+  ['Pointing_Up', 'point'],
+  ['ILoveYou', 'ily'],
 ]);
 
 export function describeFace(categories) {
@@ -19,17 +24,24 @@ export function describeFace(categories) {
     brow: score('browInnerUp'),
     eyes: average('eyeWide'),
     smile: average('mouthSmile'),
+    smirk: Math.abs(score('mouthSmileLeft') - score('mouthSmileRight')),
+    pucker: Math.max(score('mouthPucker'), score('mouthFunnel') * 0.85),
+    puff: score('cheekPuff'),
+    frown: average('mouthFrown'),
+    squint: Math.max(average('eyeSquint'), Math.abs(score('browOuterUpLeft') - score('browOuterUpRight'))),
+    scowl: (average('browDown') + Math.max(score('noseSneerLeft'), score('noseSneerRight'))) / 2,
     wink: Math.abs(leftBlink - rightBlink),
     closedEye: Math.max(leftBlink, rightBlink),
     openEye: Math.min(leftBlink, rightBlink),
   };
 }
 
-function classifyExpression({ jaw, brow, eyes, smile, wink, closedEye, openEye }) {
+function classifyExpression(features) {
+  const { jaw, brow, eyes, smile, wink, closedEye, openEye } = features;
   if (jaw >= 0.43 && (brow >= 0.35 || eyes >= 0.29)) return 'shock';
   if (closedEye >= 0.46 && openEye <= 0.25 && wink >= 0.29) return 'wink';
-  if (smile >= 0.52 && jaw < 0.43) return 'smile';
-  return null;
+  if (smile >= 0.52 && jaw < 0.43 && features.smirk < 0.42) return 'smile';
+  return closestFacePose(features, true);
 }
 
 export function classifyFace(categories) {
@@ -76,7 +88,7 @@ export function classifyHand(categories, worldLandmarks) {
   return isOpenPalm(worldLandmarks) ? 'palm' : null;
 }
 
-const priority = ['shock', 'wink', 'smile', 'thumb', 'peace', 'palm', 'fist'];
+const priority = ['shock', 'wink', 'smile', 'thumb', 'peace', 'palm', 'fist', ...Object.keys(flexiblePoses)];
 
 export function createReactionGate() {
   const states = new Map(priority.map((id) => [id, {
@@ -158,16 +170,17 @@ export function startTracking(video, callbacks) {
         const hand = handModel?.recognizeForVideo(video, now);
         const features = describeFace(face?.faceBlendshapes[0]?.categories);
         const faceId = classifyExpression(features);
-        const expression = smoothExpression(faceId, features, now);
         const handId = classifyHand(hand?.gestures[0], hand?.worldLandmarks[0]);
         const facePoints = face?.faceLandmarks[0];
         const handPoints = hand?.landmarks[0];
+        const expression = smoothExpression(facePoints ? faceId ?? 'freeform' : null, features, now);
         const active = gate(faceId, handId, now);
         const point = active === faceId ? facePoints?.[1] : handPoints?.[9];
         callbacks.sample({
           faceAvailable: Boolean(faceModel), handAvailable: Boolean(handModel),
           faceSeen: Boolean(facePoints), handSeen: Boolean(handPoints),
-          faceId, handId, active, point,
+          faceId, handId, active, point, facePoint: facePoints?.[1], handPoint: handPoints?.[9],
+          pose: expression,
           expression: active && active === faceId ? expression : null,
         });
       } catch {

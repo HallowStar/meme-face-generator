@@ -1,4 +1,5 @@
-import catalog from './meme-catalog.json?v=expression-matching' with { type: 'json' };
+import catalog from './meme-catalog.json?v=flexible-poses' with { type: 'json' };
+import { flexiblePoses } from './flexible-poses.mjs?v=flexible-poses';
 
 const weightsByReaction = {
   shock: { jaw: 0.55, brow: 0.20, eyes: 0.25 },
@@ -17,9 +18,12 @@ export function matchReaction(reaction, features, startAt = 0) {
   if (!entries.length) return { items: [], mode: 'rotation' };
   const index = startAt % entries.length;
   const items = [...entries.slice(index), ...entries.slice(0, index)];
-  const weights = weightsByReaction[reaction];
+  const flexibleTraits = Object.keys(flexiblePoses[reaction]?.traits ?? {});
+  const weights = weightsByReaction[reaction] ?? (flexibleTraits.length
+    ? Object.fromEntries(flexibleTraits.map((key) => [key, 1 / flexibleTraits.length]))
+    : null);
 
-  if (!weights) return { items, mode: 'gesture' };
+  if (!weights) return { items, mode: reaction === 'deadpan' ? 'rotation' : 'gesture' };
   if (!features || Object.keys(weights).some((key) => !Number.isFinite(features[key]))) {
     return { items, mode: 'rotation' };
   }

@@ -476,5 +476,279 @@
       "kind": "gif",
       "source": "https://giphy.com/gifs/good-success-ron-swanson-26gsobowozGM9umBi"
     }
+  ],
+  "smirk": [
+    {
+      "id": "UX6huwJfADuH9khCMl",
+      "title": "Jim Halpert smirks",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/theoffice-the-office-tv-business-ethics-UX6huwJfADuH9khCMl",
+      "traits": {
+        "smirk": 0.48
+      }
+    },
+    {
+      "id": "83vBarohXpmmc",
+      "title": "The Mentalist smiles knowingly",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/smile-smiling-the-mentalist-83vBarohXpmmc",
+      "traits": {
+        "smirk": 0.59
+      }
+    },
+    {
+      "id": "zK7xO69K89P8czmcLI",
+      "title": "Scheming cat smirks",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/evil-cat-smirking-scheming-zK7xO69K89P8czmcLI",
+      "traits": {
+        "smirk": 0.78
+      }
+    }
+  ],
+  "squint": [
+    {
+      "id": "rhJdZzGEZDwAM",
+      "title": "Bella Thorne squints",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/bella-thorne-dyslexia-wifflegif-rhJdZzGEZDwAM",
+      "traits": {
+        "squint": 0.55
+      }
+    },
+    {
+      "id": "n1aKyfpy37dBDCLRBM",
+      "title": "Confused stare",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/reaction-crazy-seriously-n1aKyfpy37dBDCLRBM",
+      "traits": {
+        "squint": 0.7
+      }
+    },
+    {
+      "id": "80mXWlPqTSU1y",
+      "title": "George Costanza squints",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/reaction-seinfeld-80mXWlPqTSU1y",
+      "traits": {
+        "squint": 0.85
+      }
+    }
+  ],
+  "pout": [
+    {
+      "id": "hmaIFbMUjVaZG",
+      "title": "Pouting face",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/we-are-your-friends-hmaIFbMUjVaZG",
+      "traits": {
+        "pucker": 0.59
+      }
+    },
+    {
+      "id": "133LNjDRNWcHHa",
+      "title": "Dramatic pout",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/pout-133LNjDRNWcHHa",
+      "traits": {
+        "pucker": 0.74
+      }
+    },
+    {
+      "id": "BLJy2x6QwzgdrCfAlD",
+      "title": "Oleg pouts",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/moodman-reaction-BLJy2x6QwzgdrCfAlD",
+      "traits": {
+        "pucker": 0.88
+      }
+    }
+  ],
+  "puff": [
+    {
+      "id": "4Qb3JIh8rGqkiTzHHe",
+      "title": "Homelander puffs his cheeks",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/homelander-puffing-puff-blow-meme-4Qb3JIh8rGqkiTzHHe",
+      "traits": {
+        "puff": 0.8
+      }
+    },
+    {
+      "id": "iX3x1zn7wLg9qa6dYb",
+      "title": "Puffed-cheek hamster",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/monji-fluffymonji-hamji-iX3x1zn7wLg9qa6dYb",
+      "traits": {
+        "puff": 0.63
+      }
+    }
+  ],
+  "scowl": [
+    {
+      "id": "xT0BKf4jWZo87CjxLO",
+      "title": "Robert Patrick scowls",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/conan-obrien-xT0BKf4jWZo87CjxLO",
+      "traits": {
+        "scowl": 0.6
+      }
+    },
+    {
+      "id": "pClNMWJOnV5ksycG3v",
+      "title": "Homelander looks displeased",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/homelander-meme-disgusted-face-pClNMWJOnV5ksycG3v",
+      "traits": {
+        "scowl": 0.77
+      }
+    },
+    {
+      "id": "YOWT5OKkE8LXJ00XmE",
+      "title": "Disgusted look from The Traitors",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/TraitorsAU-traitorsau-traitorsaustralia-ep5-YOWT5OKkE8LXJ00XmE",
+      "traits": {
+        "scowl": 0.48
+      }
+    }
+  ],
+  "frown": [
+    {
+      "id": "Ci3nCVx952lfG",
+      "title": "Disappointed dog",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/dog-imgur-Ci3nCVx952lfG",
+      "traits": {
+        "frown": 0.54
+      }
+    },
+    {
+      "id": "l3vRhaxVcQ1i0CZlC",
+      "title": "Disappointed monkey",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/justin-monkey-i-am-disappointed-l3vRhaxVcQ1i0CZlC",
+      "traits": {
+        "frown": 0.65
+      }
+    },
+    {
+      "id": "ZfuidXHMQHfLW",
+      "title": "Disappointed reaction",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/annoyed-ZfuidXHMQHfLW",
+      "traits": {
+        "frown": 0.8
+      }
+    }
+  ],
+  "yawn": [
+    {
+      "id": "d5mI2F3MxCTJu",
+      "title": "Sleepy sloth yawns",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/sloth-yawn-d5mI2F3MxCTJu",
+      "traits": {
+        "jaw": 0.67
+      }
+    },
+    {
+      "id": "IaV8zqK68jl0QivKgA",
+      "title": "White cat yawns",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/boring-white-cat-big-yawn-IaV8zqK68jl0QivKgA",
+      "traits": {
+        "jaw": 0.91
+      }
+    },
+    {
+      "id": "TfWhFbURIirNegNN4t",
+      "title": "Bugs Bunny suppresses a yawn",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/moodman-TfWhFbURIirNegNN4t",
+      "traits": {
+        "jaw": 0.75
+      }
+    }
+  ],
+  "deadpan": [
+    {
+      "id": "8ynTQ4QOlFzEPKmg6j",
+      "title": "Deadpan stare in glasses",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/huh-oh-nah-chrisfinesse111-8ynTQ4QOlFzEPKmg6j"
+    },
+    {
+      "id": "HfFccPJv7a9k4",
+      "title": "Bored school portrait",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/HfFccPJv7a9k4"
+    },
+    {
+      "id": "BIZkwFtu2xDlS",
+      "title": "Justin Timberlake judges silently",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/google-im-reddit-BIZkwFtu2xDlS"
+    }
+  ],
+  "down": [
+    {
+      "id": "1ScF5MuJRL4Os",
+      "title": "Thumbs down",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/thumbs-down-1ScF5MuJRL4Os"
+    },
+    {
+      "id": "zluNSUMAFsVrHDtO0l",
+      "title": "Disapproving cat",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/dislike-lyle-thumbs-down-cat-zluNSUMAFsVrHDtO0l"
+    },
+    {
+      "id": "3ohhwH6yMO7ED5xc7S",
+      "title": "Yankees thumbs down",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/mlb-yankees-thumbs-down-3ohhwH6yMO7ED5xc7S"
+    }
+  ],
+  "point": [
+    {
+      "id": "dHBla3RehQgqb06MD7",
+      "title": "Coach Josh points up",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/CoachJoshWood-point-coach-josh-dHBla3RehQgqb06MD7"
+    },
+    {
+      "id": "LpM872FjZASlTCw2uK",
+      "title": "Jalen Hurts points skyward",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/nfl-nfl-combine-2020-jalen-hurts-LpM872FjZASlTCw2uK"
+    },
+    {
+      "id": "zihFgY0dbmlB6UOzpi",
+      "title": "Cookie Monster says look at this",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/sesamestreet-sesame-street-cookie-monster-zihFgY0dbmlB6UOzpi"
+    }
+  ],
+  "ily": [
+    {
+      "id": "dOu2GZmATgEj6kqcjA",
+      "title": "I love you by Nice Moves MN",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/dOu2GZmATgEj6kqcjA"
+    },
+    {
+      "id": "MvYBedA9itot2",
+      "title": "Nyle DiMarco signs I love you",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/i-love-you-sign-language-asl-MvYBedA9itot2"
+    },
+    {
+      "id": "ZXr9QrohDoa4eQ9nGw",
+      "title": "ASL Connect signs I love you",
+      "kind": "gif",
+      "source": "https://giphy.com/gifs/ASL-Connect-i-love-you-ily-ilysm-ZXr9QrohDoa4eQ9nGw"
+    }
   ]
 }

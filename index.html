@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f7f3e9">
   <title>Meme Cam</title>
   <link rel="stylesheet" href="./styles.css?v=expression-matching">
-  <script type="module" src="./studio.mjs?v=expression-matching"></script>
+  <script type="module" src="./studio.mjs?v=flexible-poses"></script>
   <script type="module" src="./motion.mjs?v=editorial"></script>
 </head>
 <body>
@@ -73,6 +73,7 @@
             <span class="tracker" id="hand-status" data-active="false">Hand idle</span>
           </div>
           <button class="button quiet-button" type="button" id="stop-camera" hidden>Stop camera</button>
+          <button class="button quiet-button" type="button" id="match-pose" hidden disabled>Match my pose</button>
           <span class="local-label" id="local-label">Camera stays on-device</span>
         </div>
       </section>

@@ -1,8 +1,9 @@
-import { matchReaction } from './meme-matching.mjs?v=expression-matching';
+import { matchReaction } from './meme-matching.mjs?v=flexible-poses';
+import { closestFacePose, flexiblePoses } from './flexible-poses.mjs?v=flexible-poses';
 import { reactions, templates } from './presets.mjs?v=editorial';
 import { captureStill, createSoundEffects, renderLive, renderMeme } from './effects.mjs?v=editorial';
-import { startTracking } from './vision.mjs?v=expression-matching';
-import { pickReactionCaption, reactionContent } from './reaction-content.mjs?v=expression-matching';
+import { startTracking } from './vision.mjs?v=flexible-poses';
+import { pickReactionCaption, reactionContent } from './reaction-content.mjs?v=flexible-poses';
 
 const byId = (id) => document.getElementById(id);
 const video = byId('camera');
@@ -11,6 +12,8 @@ const liveCanvas = byId('live-effects');
 const memeCanvas = byId('meme');
 const startButton = byId('start-camera');
 const stopButton = byId('stop-camera');
+const matchPoseButton = byId('match-pose');
+let latestPose;
 const expandButton = byId('expand-camera');
 const demoButton = byId('demo');
 const downloadButton = byId('download');
@@ -79,7 +82,7 @@ function setDraft(next, top = '', bottom = '', style) {
   bottomCaption.value = bottom;
   if (style) layout.value = style;
   renderDraft();
-  newCaptionButton.hidden = !draft.reaction;
+  newCaptionButton.hidden = !(draft.reaction || draft.pose);
   downloadButton.disabled = false;
 }
 
@@ -130,19 +133,19 @@ function renderMatch() {
   byId('next-match').disabled = matchItems.length < 2;
 }
 
-function showReactionMatch(reaction, expression = null, initial = false) {
+function showReactionMatch(reaction, expression = null, initial = false, approximate = false) {
   const position = matchPositions.get(reaction.id) ?? 0;
   const result = matchReaction(reaction.id, expression, position);
   if (!result.items.length) return;
   if (!initial) matchPositions.set(reaction.id, (position + 1) % result.items.length);
   matchItems = result.items;
   matchIndex = 0;
-  matchMode = initial ? 'Sample match' : {
+  matchMode = initial ? 'Sample match' : approximate ? 'Closest available match' : {
     expression: 'Matched to your expression',
     gesture: 'Matched to your gesture',
     rotation: 'From the reaction collection',
   }[result.mode];
-  matchTopic = reactionContent[reaction.id].topic;
+  matchTopic = reactionContent[reaction.id]?.topic ?? reaction.topic;
   if (reduceMotion.matches) playGif = false;
   renderMatch();
 }
@@ -162,7 +165,7 @@ byId('use-match-image').addEventListener('click', async () => {
     const image = await loadImage(match.image);
     if (request !== draftRequest || match !== activeMatch) return;
     setDraft({
-      template: match, image, reaction: draft.reaction, label: match.title + ' image',
+      template: match, image, reaction: draft.reaction, pose: draft.pose, label: match.title + ' image',
     }, topCaption.value, bottomCaption.value);
     notify('');
     announce(match.title + ' is ready in the meme editor.');
@@ -284,9 +287,12 @@ function setCameraState(state, message = '') {
   startButton.hidden = !['off', 'error'].includes(state);
   startButton.textContent = state === 'error' ? 'Retry camera' : 'Start camera';
   stopButton.hidden = !['starting', 'loading', 'on'].includes(state);
+  matchPoseButton.hidden = state !== 'on';
   byId('local-label').hidden = !stopButton.hidden;
 
   if (state !== 'on') {
+    latestPose = null;
+    matchPoseButton.disabled = true;
     const text = state === 'loading' ? 'loading' : 'idle';
     updateTracker('face-status', 'Face', text);
     updateTracker('hand-status', 'Hand', text);
@@ -303,18 +309,46 @@ function setCameraState(state, message = '') {
   notify(state === 'on' ? message : '');
 }
 
+function captureMatch(id, expression, point, approximate = false) {
+  const effect = reactionsById.get(id);
+  if (effect) {
+    fireReaction(effect, point, false, expression);
+    return;
+  }
+
+  const pose = { id, ...flexiblePoses[id] };
+  const frame = captureStill(video);
+  if (!frame) return;
+  clearLiveEffect();
+  ++draftRequest;
+  const captions = generateCaptions(pose);
+  setDraft({ frame, pose, label: pose.name + ' reaction' }, captions.top, captions.bottom);
+  showReactionMatch(pose, expression, false, approximate);
+  announce(pose.name + ' match and meme are ready.');
+}
+
 function trackFrame(sample) {
+  latestPose = sample;
+  matchPoseButton.disabled = !sample.pose && !sample.handId;
   for (const [key, type] of [['face', 'Face'], ['hand', 'Hand']]) {
     const id = sample[key + 'Id'];
-    const matched = reactionsById.get(id)?.name.toLowerCase();
+    const matched = (reactionsById.get(id) ?? flexiblePoses[id])?.name.toLowerCase();
     const seen = sample[key + 'Seen'];
     const available = sample[key + 'Available'];
     let text = available ? 'searching' : 'unavailable';
     if (seen) text = matched ? '· ' + matched : 'detected';
     updateTracker(key + '-status', type, text, seen);
   }
-  if (sample.active) fireReaction(reactionsById.get(sample.active), sample.point, false, sample.expression);
+  if (sample.active) captureMatch(sample.active, sample.expression, sample.point);
 }
+
+matchPoseButton.addEventListener('click', () => {
+  if (!latestPose) return;
+  const { pose, faceId, handId, facePoint, handPoint } = latestPose;
+  if (faceId) captureMatch(faceId, pose, facePoint);
+  else if (handId) captureMatch(handId, null, handPoint);
+  else if (pose) captureMatch(closestFacePose(pose), pose, facePoint, true);
+});
 
 function stopCamera() {
   stopTracking?.();
@@ -501,8 +535,9 @@ upload.addEventListener('change', async () => {
 layout.addEventListener('change', renderDraft);
 
 newCaptionButton.addEventListener('click', () => {
-  if (!draft.reaction) return;
-  const captions = generateCaptions(draft.reaction, { top: topCaption.value, bottom: bottomCaption.value });
+  const reaction = draft.reaction ?? draft.pose;
+  if (!reaction) return;
+  const captions = generateCaptions(reaction, { top: topCaption.value, bottom: bottomCaption.value });
   topCaption.value = captions.top;
   bottomCaption.value = captions.bottom;
   renderDraft();
@@ -520,7 +555,7 @@ reduceMotion.addEventListener('change', () => {
 });
 
 downloadButton.addEventListener('click', () => {
-  const name = draft.reaction?.id || draft.template?.id || 'custom';
+  const name = draft.reaction?.id || draft.pose?.id || draft.template?.id || 'custom';
   memeCanvas.toBlob((blob) => {
     if (!blob) {
       notify('The PNG could not be created. Try downloading again.');
